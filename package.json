@@ -1,12 +1,15 @@
 {
-  "name": "greenpress-cli",
+  "name": "@greenpress/cli",
   "version": "0.0.1",
   "description": "CLI to install greenpress",
   "main": "cli.js",
   "bin": {
     "greenpress": "cli.js"
   },
-  "repository": "ssh://github.com/greenpress/greenpress-cli.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/greenpress/greenpress-cli.git"
+  },
   "keywords": [
     "greenpress",
     "blogs",
@@ -16,5 +19,13 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^4.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/greenpress/greenpress-cli/issues"
+  },
+  "homepage": "https://github.com/greenpress/greenpress-cli#readme",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
