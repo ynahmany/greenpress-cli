@@ -1,0 +1,20 @@
+{
+  "name": "greenpress-cli",
+  "version": "0.0.1",
+  "description": "CLI to install greenpress",
+  "main": "cli.js",
+  "bin": {
+    "greenpress": "cli.js"
+  },
+  "repository": "ssh://github.com/greenpress/greenpress-cli.git",
+  "keywords": [
+    "greenpress",
+    "blogs",
+    "cli"
+  ],
+  "author": "David Meir-Levy <davidmeirlevy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^4.0.1"
+  }
+}
