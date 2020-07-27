@@ -5,6 +5,10 @@ const { version } = require('./package.json')
 
 program.version(version)
 
-require('./commands/create')(program);
+const commands = require('./commands/commands');
+
+for (let command in commands) {
+	commands[command](program)
+}
 
 program.parse(process.argv)
