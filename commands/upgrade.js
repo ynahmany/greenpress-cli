@@ -55,7 +55,6 @@ function getJSON(url) {
 
 function checkAndUpgradeDependency(name, currentValue, remoteValue) {
 	return new Promise((resolve) => {
-		// console.log(name, value, remotePackage);
 		questionInterface.question(`Would you like to upgrade to remote's version? [y/n]`,
 			function (input = 'n') {
 				if (input.toLowerCase() === "y") {

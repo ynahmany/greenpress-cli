@@ -7,5 +7,6 @@ program.version(version)
 
 require('./commands/create')(program)
 require('./commands/upgrade')(program)
+require('./commands/populate')(program)
 
 program.parse(process.argv)
