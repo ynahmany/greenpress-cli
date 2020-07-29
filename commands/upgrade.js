@@ -1,10 +1,7 @@
 const fs = require('fs');
 const https = require('https');
+const askQuestion = require('../utils/question');
 const remotePackagePath = 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
-const questionInterface = require('readline').createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
 
 function setUpgradeCommand(program) {
 	program
@@ -38,7 +35,6 @@ function setUpgradeCommand(program) {
 			// // save updated json
 			fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 4));
 			console.log('Upgrade ended successfully!');
-			questionInterface.close();
 		});
 }
 
@@ -54,17 +50,14 @@ function getJSON(url) {
 }
 
 function checkAndUpgradeDependency(name, currentValue, remoteValue) {
-	return new Promise((resolve) => {
-		questionInterface.question(`Would you like to upgrade to remote's version? [y/n]`,
-			function (input = 'n') {
-				if (input.toLowerCase() === "y") {
-					console.log(`Upgrading ${name}`);
-					resolve(remoteValue);
-				} else {
-					console.log(`Not upgrading ${name}`);
-					resolve(currentValue)
-				}
-			});
+	return askQuestion(`Would you like to upgrade to remote's version? [y/n]`, 'n').then(input => {
+		if (input.toLowerCase() === 'y') {
+			console.log(`Upgrading ${name}`);
+			return remoteValue;
+		} else {
+			console.log(`Not upgrading ${name}`);
+			return currentValue;
+		}
 	});
 }
 
