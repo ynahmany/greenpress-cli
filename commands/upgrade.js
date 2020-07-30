@@ -33,7 +33,7 @@ function setUpgradeCommand(program) {
 			}
 
 			// // save updated json
-			fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 4));
+			fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 2));
 			console.log('Upgrade ended successfully!');
 		});
 }

@@ -38,8 +38,11 @@ function setCreateCommand(program) {
 				const projectPackagePath = name + "/package.json";
 				const projectPackage = require(projectPackagePath);
 				projectPackage.dependencies["@greenpress/blog-front"] = altFrontUrl;
-				fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 4));
+				fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 2));
 			}
+
+			console.log(`Done! now enter "${name}" directory and run: npm install`);
+			process.exit(0);
 		})
 }
 
