@@ -8,8 +8,8 @@ function setCreateCommand(program) {
     program
     .command('create [name] [type] [altFront]')
     .description('create a new website using greenpress')
-    .action(function(name = 'greenpress', type = 'pm2', altFront = null) {
-		const repoPath = type === 'pm2' ?
+    .action(async function(name = 'greenpress', type = 'pm', altFront = null) {
+		const repoPath = type !== 'pm' ?
 							'https://github.com/greenpress/greenpress-pm2' :
 							'https://github.com/greenpress/greenpress';
 		const createCommand = `git clone ${repoPath} ${name}`;

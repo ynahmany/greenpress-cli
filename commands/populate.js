@@ -9,26 +9,31 @@ function setPopulateCommand(program) {
 	.command('populate')
 	.description('initiates the database with initial categories, a post, the main menu, and your first administrator user')
 	.action(async function () {
-		const email = await readCredential("email") || 'test@test.com';
-		const password = await readCredential("password") || 'admin';
-		const populateCommand = `npm run populate-db -- --credentials ${email + ":" + password}`;
+		try {
+			const email = (await readCredential("email")) || 'test@test.com';
+			const password = (await readCredential("password")) || 'admin';
+			const populateCommand = `npm run populate-db -- --credentials ${email + ":" + password}`;
+			console.log(populateCommand);
+			execSync(populateCommand, (error, stdout, stderr) => {
+				if (error) {
+					console.log(error.message);
+					return;
+				}
 
-		execSync(populateCommand, (error, stdout, stderr) => {
-			if (error) {
-				console.log(error.message);
-				return;
-			}
+				if (stderr) {
+					console.log(stderr);
+					return;
+				}
 
-			if (stderr) {
-				console.log(stderr);
-				return;
-			}
+				console.log(stdout);
+			});
 
-			console.log(stdout);
-		});
+		}
+		catch(error) {
+			console.log(error);
+		}
+		questionInterface.close();
 	});
-
-	questionInterface.close();
 }
 
 function readCredential(credentialType) {
