@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-const askQuestion = require('../utils/question');
+const accept = require('../utils/acceptance');
 const remotePackagePath = 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
 
 function setUpgradeCommand(program) {
@@ -50,15 +50,17 @@ function getJSON(url) {
 }
 
 function checkAndUpgradeDependency(name, currentValue, remoteValue) {
-	return askQuestion(`Would you like to upgrade to remote's version? [y/n]`, 'n').then(input => {
-		if (input.toLowerCase() === 'y') {
-			console.log(`Upgrading ${name}`);
-			return remoteValue;
-		} else {
-			console.log(`Not upgrading ${name}`);
-			return currentValue;
-		}
-	});
+	return accept(`Would you like to upgrade to remote's version?`)
+	       .then(answer => upgradeFunc(answer, name, remoteValue, currentValue));
 }
 
+function upgradeFunc(answer, name, remoteValue, currentValue) {
+	if (answer) {
+		console.log(`Upgrading ${name}`);
+		return remoteValue;
+	} else {
+		console.log(`Not upgrading ${name}`);
+		return currentValue;
+	}
+}
 module.exports = setUpgradeCommand

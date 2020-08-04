@@ -1,5 +1,6 @@
 const { execSync } = require('child_process');
 const askQuestion = require('../utils/question');
+const accept = require('../utils/acceptance');
 
 function setPopulateCommand(program) {
 	program
@@ -28,11 +29,27 @@ function setPopulateCommand(program) {
 		});
 }
 
-function readCredential(credentialType, defaultValue) {
-	return askQuestion(`Select new ${credentialType} [write "none" for default]: `, 'none')
-		.then(input => {
-			return input === 'none' ? defaultValue : input;
-		})
+async function readCredential(credentialType, defaultValue) {
+	// return askQuestion(`Select new ${credentialType} [write "none" for default]: `, 'none')
+	// 	.then(input => {
+	// 		return input === 'none' ? defaultValue : input;
+	// 	})
+
+	let result = await accept(`Would you like to select ${credentialType}?`)
+				.then(answer =>  {
+					if (answer) {
+						return askQuestion(`Select new ${credentialType}: `, defaultValue)
+							.then(input => {
+								console.log(`Setting ${credentialType} to ${input}`)
+								return input;
+								})
+					} else {
+						console.log(`Using default ${credentialType} (${defaultValue})`);
+						return defaultValue;
+					}
+				});
+
+	return result;
 }
 
 module.exports = setPopulateCommand
