@@ -13,7 +13,7 @@ function setPopulateCommand(program) {
 			const password = await readCredential("password", 'admin');
 			const populateCommand = `npm run populate-db -- --credentials ${email}:${password}`;
 
-			execSync(populateCommand, (error, stdout, stderr) => {
+			execSync(populateCommand, { stdio: 'inherit' }, (error, stdout, stderr) => {
 				if (error) {
 					console.log(error.message);
 					return;
@@ -31,18 +31,18 @@ function setPopulateCommand(program) {
 
 async function readCredential(credentialType, defaultValue) {
 	let result = await accept(`Would you like to select ${credentialType}?`)
-				.then(answer =>  {
-					if (answer) {
-						return askQuestion(`Select new ${credentialType}: `, defaultValue)
-							.then(input => {
-								console.log(`Setting ${credentialType} to ${input}`)
-								return input;
-								})
-					} else {
-						console.log(`Using default ${credentialType} (${defaultValue})`);
-						return defaultValue;
-					}
-				});
+		.then(answer => {
+			if (answer) {
+				return askQuestion(`Select new ${credentialType}: `, defaultValue)
+					.then(input => {
+						console.log(`Setting ${credentialType} to ${input}`)
+						return input;
+					})
+			} else {
+				console.log(`Using default ${credentialType} (${defaultValue})`);
+				return defaultValue;
+			}
+		});
 
 	return result;
 }

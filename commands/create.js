@@ -36,14 +36,27 @@ function setCreateCommand(program) {
 
 			if (altFrontUrl) {
 				console.log(`setting blog front to ${altFrontUrl}`);
-				const projectPackagePath = name + "/package.json";
+				const projectPackagePath = `${process.env.PWD}/${name}/package.json`;
 				const projectPackage = require(projectPackagePath);
 				projectPackage.dependencies["@greenpress/blog-front"] = altFrontUrl;
 				fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 2));
 			}
 
-			if (mode === 'user')
-			{
+			console.log('\nApplication is now installing..\n')
+
+			execSync(`cd ${name} && npm install`, { stdio: 'inherit' }, (error, stdout, stderr) => {
+				if (error) {
+					console.log('Failed to install Application');
+					return;
+				}
+
+				if (stderr) {
+					console.log('Error occurred while trying to install the application');
+					return;
+				}
+			});
+
+			if (mode === 'user') {
 				execSync("git remote rename origin gp", (error, stdout, stderr) => {
 					if (error) {
 						console.log(error.message);
@@ -59,24 +72,24 @@ function setCreateCommand(program) {
 				});
 			}
 
-			console.log(`Done! now enter "${name}" directory and run: npm install`);
+			console.log(`Done!\nEnter ${name} directory, You can run the application using: npm start`);
 			process.exit(0);
 		})
 }
 
 async function checkAltFront(defaultValue = undefined) {
 	let result = await accept(`Would you like to set alternative blog front?`)
-	.then(answer =>  {
-		if (answer) {
-			return askQuestion(`Select alternative blog front: `, defaultValue)
-				.then(input => {
-					return input;
+		.then(answer => {
+			if (answer) {
+				return askQuestion(`Select alternative blog front: `, defaultValue)
+					.then(input => {
+						return input;
 					})
-		} else {
-			console.log(`Using default blog front)`);
-			return undefined;
-		}
-	});
+			} else {
+				console.log(`Using default blog front)`);
+				return undefined;
+			}
+		});
 
 	return result;
 }
