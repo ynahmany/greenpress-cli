@@ -1,30 +1,25 @@
-const { execSync } = require('child_process');
-const { exit } = require('process');
+const { spawn } = require('child_process');
 
 function setStartCommand(program) {
 	program
-	.command('start [mode]')
-	.description('start greenpress application')
-	.action(async function (mode = 'user') {
-		let startCommand = `npm ${mode === 'user' ? 'start' : 'run dev'} &`;
+		.command('start [mode]')
+		.description('start Greenpress application')
+		.action(async function (mode = 'user') {
 
-		execSync(startCommand, (error, stdout, stderr) => {
-			if (error) {
-				console.log(error.message);
-				return;
-			}
+			const spawnArgs = mode === 'user' ? [ 'start' ] : [ 'run', 'dev' ]
 
-			if (stderr) {
-				console.log(stderr);
-				return;
-			}
+			const child = spawn('npm', spawnArgs, { detached: true });
 
-			console.log(stdout);
+			console.log('Initializing Greenpress..')
+
+			child.stdout.on('data', (data) => {
+				if(data && data.toString().includes('READY  Server listening')) {
+					console.log("Greenpress is running!\n\rTo stop it, use: greenpress stop");
+					console.log("\rTo populate it, use: greenpress populate");
+					process.exit(0);
+				}
+			});
 		});
-
-		console.log("Greenpress is running! To stop it, use greenpress stop");
-		exit(0);
-	});
 }
 
 module.exports = setStartCommand;
