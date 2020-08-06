@@ -5,9 +5,9 @@ const accept = require('../utils/acceptance');
 
 function setCreateCommand(program) {
 	program
-		.command('create [name] [type] [altFront]')
+		.command('create [name] [type] [altFront] [mode]')
 		.description('create a new website using greenpress')
-		.action(async function (name = 'greenpress', type = 'default', altFront = null) {
+		.action(async function (name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
 			const repoPath = type === 'pm2' ?
 				'https://github.com/greenpress/greenpress-pm2' :
 				'https://github.com/greenpress/greenpress';
@@ -40,6 +40,23 @@ function setCreateCommand(program) {
 				const projectPackage = require(projectPackagePath);
 				projectPackage.dependencies["@greenpress/blog-front"] = altFrontUrl;
 				fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 2));
+			}
+
+			if (mode === 'user')
+			{
+				execSync("git remote rename origin gp", (error, stdout, stderr) => {
+					if (error) {
+						console.log(error.message);
+						return;
+					}
+
+					if (stderr) {
+						console.log(stderr);
+						return;
+					}
+
+					console.log(stdout);
+				});
 			}
 
 			console.log(`Done! now enter "${name}" directory and run: npm install`);

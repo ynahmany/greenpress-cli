@@ -30,11 +30,6 @@ function setPopulateCommand(program) {
 }
 
 async function readCredential(credentialType, defaultValue) {
-	// return askQuestion(`Select new ${credentialType} [write "none" for default]: `, 'none')
-	// 	.then(input => {
-	// 		return input === 'none' ? defaultValue : input;
-	// 	})
-
 	let result = await accept(`Would you like to select ${credentialType}?`)
 				.then(answer =>  {
 					if (answer) {
