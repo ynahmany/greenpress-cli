@@ -7,19 +7,12 @@ function setStopCommand(program) {
 		.action(async function () {
 
 			console.log('Stopping greenpress...');
-			execSync(`npx pm2 stop db`, (error, stdout, stderr) => {
-				if (error) {
-					console.log(error.message);
-					return;
-				}
-
-				if (stderr) {
-					console.log(stderr);
-					return;
-				}
-
-				console.log(stdout);
-			});
+			try {
+				execSync(`npx pm2 stop db`);
+			}
+			catch (e) {
+				//
+			}
 			execSync(`npx pm2 kill`, (error, stdout, stderr) => {
 				if (error) {
 					console.log(error.message);
