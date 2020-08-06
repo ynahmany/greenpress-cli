@@ -42,22 +42,8 @@ function setCreateCommand(program) {
 				fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 2));
 			}
 
-			console.log('\nApplication is now installing..\n')
-
-			execSync(`cd ${name} && npm install`, { stdio: 'inherit' }, (error, stdout, stderr) => {
-				if (error) {
-					console.log('Failed to install Application');
-					return;
-				}
-
-				if (stderr) {
-					console.log('Error occurred while trying to install the application');
-					return;
-				}
-			});
-
 			if (mode === 'user') {
-				execSync("git remote rename origin gp", (error, stdout, stderr) => {
+				execSync(`cd ${name} && git remote rename origin gp`, (error, stdout, stderr) => {
 					if (error) {
 						console.log(error.message);
 						return;
@@ -71,6 +57,20 @@ function setCreateCommand(program) {
 					console.log(stdout);
 				});
 			}
+
+			console.log('\nApplication is now installing..\n')
+
+			execSync(`cd ${name} && npm install`, { stdio: 'inherit' }, (error, stdout, stderr) => {
+				if (error) {
+					console.log('Failed to install Application');
+					return;
+				}
+
+				if (stderr) {
+					console.log('Error occurred while trying to install the application');
+					return;
+				}
+			});
 
 			console.log(`Done!\nEnter ${name} directory, You can run the application using: npm start`);
 			process.exit(0);
