@@ -1,6 +1,6 @@
 {
   "name": "@greenpress/cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CLI to install greenpress",
   "main": "cli.js",
   "bin": {
@@ -24,8 +24,5 @@
     "url": "https://github.com/greenpress/greenpress-cli/issues"
   },
   "homepage": "https://github.com/greenpress/greenpress-cli#readme",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "devDependencies": {}
 }
