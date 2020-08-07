@@ -6,10 +6,11 @@ module.exports = function yesNoQuestion(question) {
 		output: process.stdout
 	});
 	return new Promise((resolve, reject) => {
-		questionInterface.question(question + " [y/n] ",
+		questionInterface.question(question + " [y/N] ",
 			(input = 'n') => {
+				input = input.toLowerCase();
 				questionInterface.close();
-				resolve(input === 'y' ? true : false);
+				resolve(input.toLowerCase() === 'y');
 			});
 	});
 }
