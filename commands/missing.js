@@ -1,5 +1,7 @@
 const { spawn } = require('child_process');
-const dependencies = ['git', 'docker', 'node'];
+const dependencies = [['git', 'https://git-scm.com/downloads'], 
+					  ['docker', 'https://docs.docker.com/get-docker/'],
+					  ['node', 'https://nodejs.org/en/download/']];
 
 function setMissingCommand(program) {
 	program
@@ -10,16 +12,16 @@ function setMissingCommand(program) {
 		});
 }
 
-async function checkDependencyVersion(depName) {
+async function checkDependencyVersion(dep) {
 	const spawnArgs = ['--version']
-	const child = spawn(depName, spawnArgs, { detached: true });
+	const child = spawn(dep[0], spawnArgs, { detached: true });
 
 	child.stdout.on('data', (data) => {
 		if(data && data.toString().toLowerCase().includes('not')) {
-			console.log(`${depName} is not installed! You should install it so Greenpress can run properly.`);
+			console.log(`${dep[0]} is not installed! To download:\n${dep[1]}`);
 		}
 		else {
-			console.log(`${depName} is installed!`);
+			console.log(`${dep[0]} is installed! Installed version: ${data.toString()}`);
 		}
 	});
 }
