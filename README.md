@@ -34,3 +34,5 @@ A command-line interface to help you create and manage your Greenpress applicati
 * populate: create initial content and admin user for your app
   usage: greenpress populate
 
+* missing: checks if dependencies are install. If not, provides an installation link for them, else, displays their version number.
+  usage: greenpress missing
