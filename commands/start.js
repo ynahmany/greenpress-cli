@@ -3,6 +3,15 @@ const { spawn, execSync } = require('child_process');
 const { resolve } = require('path');
 const { rejects } = require('assert');
 
+const servicesEnvs = {
+	'authentication-service': process.env.AUTH_SERVICE_CWD,
+	'secrets-service': process.env.SECRETS_SERVICE_CWD,
+	'assets-service': process.env.ASSETS_SERVICE_CWD,
+	'content-service': process.env.CONTENT_SERVICE_CWD,
+	'admin-panel': process.env.ADMIN_SERVICE_CWD,
+	'blog-front': process.env.FRONT_SERVICE_CWD
+};
+
 function setStartCommand(program) {
 	program
 		.command('start [mode]')
@@ -12,7 +21,10 @@ function setStartCommand(program) {
 
 			if (mode === 'dev' && options.local) {
 				console.log(`Chose to locally run ${options.local} services`)
-				await LocalizeRequestedServices(options.local.split(','));
+				for (const service of options.local.split(',')) {
+					servicesEnvs[service] = process.cwd() + '/dev/' + service;
+					console.log(servicesEnvs[service])
+				}
 			}
 
 			const spawnArgs = mode === 'user' ? [ 'start' ] : [ 'run', 'dev' ]
@@ -30,38 +42,6 @@ function setStartCommand(program) {
 				}
 			});
 		});
-}
-
-async function LocalizeRequestedServices(services) {
-	for (const service of services) {
-		switch(service)
-		{
-		case 'authentication':
-			process.env.AUTH_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.AUTH_SERVICE_CWD}`);
-			break;
-		case 'secrets':
-			process.env.SECRETS_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.SECRETS_SERVICE_CWD}`);
-			break;
-		case 'assets':
-			process.env.ASSETS_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.ASSETS_SERVICE_CWD}`);
-			break;
-		case 'content':
-			process.env.CONTENT_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.CONTENT_SERVICE_CWD}`);
-			break;
-		case 'admin-panel':
-			process.env.ADMIN_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.ADMIN_SERVICE_CWD}`);
-			break;
-		case 'blog-front':
-			process.env.FRONT_SERVICE_CWD = process.cwd() + '/dev/' + service;
-			console.log(`Set ${service} cwd to: ${process.env.FRONT_SERVICE_CWD}`);
-				break;
-		}
-	}
 }
 
 module.exports = setStartCommand;
