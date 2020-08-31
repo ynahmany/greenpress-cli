@@ -13,7 +13,7 @@ A command-line interface to help you create and manage your Greenpress applicati
   usage: greenpress -V, greenpress --version
 
 * start: starts app
-  usage: greenpress start [mode [--local=\<services\>]]
+  usage: greenpress start [mode [-l, --local=\<services\>]]
   options:
     * mode: choose developer (input: dev) or user (no input required) application mode
       * local: if in dev mode and would like to run one of the key services (authentication, secretes, assets, content, admin-panel, blog-front) from your local           dev folder (my-app/dev), use the local option. E.g.:
