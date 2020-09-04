@@ -2,14 +2,15 @@ const { green, blue } = require('../utils/colors');
 const { spawn, execSync } = require('child_process');
 const { resolve } = require('path');
 const { rejects } = require('assert');
+const { exit } = require('process');
 
-const servicesEnvs = {
-	'authentication-service': 'AUTH_SERVICE_CWD',
-	'secrets-service': 'SECRETS_SERVICE_CWD',
-	'assets-service': 'ASSETS_SERVICE_CWD',
-	'content-service': 'CONTENT_SERVICE_CWD',
-	'admin-panel': 'ADMIN_SERVICE_CWD',
-	'blog-front': 'FRONT_SERVICE_CWD'
+const servicesEnvsAndRepos = {
+	'auth': ['AUTH_SERVICE_CWD', 'authentication-service'],
+	'secrets': ['SECRETS_SERVICE_CWD', 'secrets-service'],
+	'assets': ['ASSETS_SERVICE_CWD', 'assets-service'],
+	'content': ['CONTENT_SERVICE_CWD', 'content-service'],
+	'admin': ['ADMIN_SERVICE_CWD', 'admin-panel'],
+	'blog-front': ['FRONT_SERVICE_CWD', 'blog-front']
 };
 
 function setStartCommand(program) {
@@ -22,8 +23,14 @@ function setStartCommand(program) {
 			if (mode === 'dev' && options.local) {
 				console.log(`Chose to locally run ${options.local} services`)
 				for (const service of options.local.split(',')) {
-					process.env[servicesEnvs[service]] = process.cwd() + '/dev/' + service;
-					console.log(process.env[servicesEnvs[service]])
+					if (servicesEnvsAndRepos[service] !== undefined) {
+						process.env[servicesEnvsAndRepos[service][0]] = process.cwd() + '/dev/' + servicesEnvsAndRepos[service][1];
+						console.log(process.env[servicesEnvsAndRepos[service][0]])
+					} else {
+						console.log(`${service} is not a valid option, exiting!`)
+						exit(1)
+					}
+
 				}
 			}
 

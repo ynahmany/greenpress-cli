@@ -16,9 +16,9 @@ A command-line interface to help you create and manage your Greenpress applicati
   usage: greenpress start [mode [-l, --local= \<services\>]]
   options:
     * mode: choose developer (input: dev) or user (no input required) application mode
-      * local: if in dev mode and would like to run one of the key services (authentication-service, secretes-service, assets-service, content-service, admin-panel, blog-front) from your local dev folder (my-app/dev), use the local option. E.g.:
-	  > greenpress start dev -l assets-service,blog-front
-      > greenpress start dev --local=assets-service,blog-front
+      * local: if in dev mode and would like to run one of the key services (auth, secretes, assets, content, admin-panel, blog-front) from your local dev folder (my-app/dev), use the local option. E.g.:
+	  > greenpress start dev -l assets,blog-front
+      > greenpress start dev --local=assets,blog-front
 
 * stop: shuts down app
   usage: greenpress stop
