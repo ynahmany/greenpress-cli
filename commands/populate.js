@@ -1,6 +1,7 @@
 const { execSync } = require('child_process');
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
+const { green, blue, red } = require('../utils/colors');
 
 function setPopulateCommand(program) {
 	program
@@ -39,7 +40,7 @@ async function readCredential(credentialType, defaultValue) {
 						return input;
 					})
 			} else {
-				console.log(`Using default ${credentialType} (${defaultValue})`);
+				console.log(blue(`Using default ${credentialType} (${defaultValue})`));
 				return defaultValue;
 			}
 		});
