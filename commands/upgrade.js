@@ -2,6 +2,7 @@ const fs = require('fs');
 const https = require('https');
 const accept = require('../utils/acceptance');
 const remotePackagePath = 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
+const { green, blue, yellow } = require('../utils/colors');
 
 function setUpgradeCommand(program) {
 	program
@@ -21,14 +22,14 @@ function setUpgradeCommand(program) {
 			for (const name in dependencies) {
 				const remoteValue = dependencies[name];
 				const currentValue = localDependencies[name];
-				console.log(`Checking ${name} version`);
+				console.log(`Checking ${blue(name)} version`);
 				if (remoteValue !== currentValue) {
-					console.log(`Found a difference in ${name}:\n
+					console.log(`Found a difference in ${blue(name)}:\n
 				local: ${currentValue} <--> ${remoteValue} :remote\n`);
 					localDependencies[name] = await checkAndUpgradeDependency(name, currentValue, remoteValue);
-					console.log(`Updated ${name}'s version to: ${localDependencies[name]}`);
+					console.log(`Updated ${blue(name)}'s version to: ${localDependencies[name]}`);
 				} else {
-					console.log(`${name}'s version is the latest! Proceeding.`)
+					console.log(`${blue(name)}'s version is the latest! Proceeding.`)
 				}
 			}
 
@@ -56,10 +57,10 @@ function checkAndUpgradeDependency(name, currentValue, remoteValue) {
 
 function upgradeFunc(answer, name, remoteValue, currentValue) {
 	if (answer) {
-		console.log(`Upgrading ${name}`);
+		console.log(green(`Upgrading ${name}`));
 		return remoteValue;
 	} else {
-		console.log(`Not upgrading ${name}`);
+		console.log(yellow(`Not upgrading ${name}`));
 		return currentValue;
 	}
 }
