@@ -1,4 +1,5 @@
 const { execSync } = require('child_process');
+const { green, blue, red } = require('../utils/colors');
 const dependencies = [['git', 'https://git-scm.com/downloads'], 
 					  ['docker', 'https://docs.docker.com/get-docker/'],
 					  ['node', 'https://nodejs.org/en/download/']];
@@ -17,10 +18,10 @@ function checkDependencyVersion(dep) {
 		const versionCommand = dep[0] + " --version";
 		const version = execSync(versionCommand).toString();
 		if(version.includes('not')) {
-			console.log(`${dep[0]} is not installed! To download:\n${dep[1]}`);
+			console.log(`${red(`${dep[0]} is not installed!`)} To download:\n${dep[1]}`);
 		}
 		else {
-			console.log(`${dep[0]} is installed! Installed version: ${version}`);
+			console.log(`${green(`${dep[0]} is installed!`)} Installed version: ${version}`);
 		}
 	} catch (ex) {
 		console.log(`An exception was thrown: ${ex.stdout}`);
