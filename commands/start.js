@@ -4,12 +4,12 @@ const { resolve } = require('path');
 const { rejects } = require('assert');
 
 const servicesEnvs = {
-	'authentication-service': 'process.env.AUTH_SERVICE_CWD',
-	'secrets-service': 'process.env.SECRETS_SERVICE_CWD',
-	'assets-service': 'process.env.ASSETS_SERVICE_CWD',
-	'content-service': 'process.env.CONTENT_SERVICE_CWD',
-	'admin-panel': 'process.env.ADMIN_SERVICE_CWD',
-	'blog-front': 'process.env.FRONT_SERVICE_CWD'
+	'authentication-service': 'AUTH_SERVICE_CWD',
+	'secrets-service': 'SECRETS_SERVICE_CWD',
+	'assets-service': 'ASSETS_SERVICE_CWD',
+	'content-service': 'CONTENT_SERVICE_CWD',
+	'admin-panel': 'ADMIN_SERVICE_CWD',
+	'blog-front': 'FRONT_SERVICE_CWD'
 };
 
 function setStartCommand(program) {
