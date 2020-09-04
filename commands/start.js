@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-const { green } = require('../utils/colors');
+const { green, blue } = require('../utils/colors');
 
 function setStartCommand(program) {
 	program

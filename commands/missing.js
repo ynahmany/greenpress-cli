@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const { green, blue, red } = require('../utils/colors');
+const { green, red } = require('../utils/colors');
 const dependencies = [['git', 'https://git-scm.com/downloads'], 
 					  ['docker', 'https://docs.docker.com/get-docker/'],
 					  ['node', 'https://nodejs.org/en/download/']];
