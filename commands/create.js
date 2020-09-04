@@ -2,6 +2,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
+const { green, blue, red } = require('../utils/colors');
 
 function setCreateCommand(program) {
 	program
@@ -35,7 +36,7 @@ function setCreateCommand(program) {
 			}
 
 			if (altFrontUrl) {
-				console.log(`setting blog front to ${altFrontUrl}`);
+				console.log(blue(`setting blog front to ${altFrontUrl}`));
 				const projectPackagePath = `${process.env.PWD}/${name}/package.json`;
 				const projectPackage = require(projectPackagePath);
 				projectPackage.dependencies["@greenpress/blog-front"] = altFrontUrl;
@@ -58,21 +59,22 @@ function setCreateCommand(program) {
 				});
 			}
 
-			console.log('\nApplication is now installing..\n')
+			console.log('\n', blue('Application is now installing..'), '\n')
 
 			execSync(`cd ${name} && npm install`, { stdio: 'inherit' }, (error, stdout, stderr) => {
 				if (error) {
-					console.log('Failed to install Application');
+					console.log(red('Failed to install Application'));
 					return;
 				}
 
 				if (stderr) {
-					console.log('Error occurred while trying to install the application');
+					console.log(red('Error occurred while trying to install the application'));
 					return;
 				}
 			});
 
-			console.log(`Done!\nEnter ${name} directory, You can run the application using: npm start`);
+			console.log(green('Done!'), 
+				`\nEnter ${blue(name)} directory, You can run the application using: npm start`);
 			process.exit(0);
 		})
 }
