@@ -1,4 +1,5 @@
 const { execSync } = require('child_process');
+const { green, blue } = require('../utils/colors');
 
 function setStopCommand(program) {
 	program
@@ -6,7 +7,7 @@ function setStopCommand(program) {
 		.description('stop greenpress application')
 		.action(function () {
 
-			console.log('Stopping greenpress...');
+			console.log(blue('Stopping greenpress...'));
 			try {
 				execSync('npx pm2 stop db', () => {});
 			} catch (e) {
@@ -39,7 +40,7 @@ function setStopCommand(program) {
 				console.log(stdout);
 			});
 
-			console.log("Greenpress stopped");
+			console.log(green("Greenpress stopped"));
 			process.exit(0);
 		});
 }
