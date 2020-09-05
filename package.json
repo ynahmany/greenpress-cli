@@ -18,7 +18,7 @@
   "author": "David Meir-Levy <davidmeirlevy@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "^4.0.1"
+    "yargs": "^15.4.1"
   },
   "bugs": {
     "url": "https://github.com/greenpress/greenpress-cli/issues"
