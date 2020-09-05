@@ -4,13 +4,10 @@ const dependencies = [['git', 'https://git-scm.com/downloads'],
 					  ['docker', 'https://docs.docker.com/get-docker/'],
 					  ['node', 'https://nodejs.org/en/download/']];
 
-function setMissingCommand(program) {
-	program
-	.command('missing')
-	.description('checks if Greenpress dependencies are installed')
-	.action(function() {
-		dependencies.forEach(checkDependencyVersion);
-	});
+// 'missing'
+// 'checks if Greenpress dependencies are installed'
+function missing () {
+	dependencies.forEach(checkDependencyVersion);
 }
 
 function checkDependencyVersion(dep) {	
@@ -28,4 +25,4 @@ function checkDependencyVersion(dep) {
 	};
 }
 
-module.exports = setMissingCommand;
+module.exports = missing;
