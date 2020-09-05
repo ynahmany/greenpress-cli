@@ -1,6 +1,5 @@
 const { green, blue, red } = require('../utils/colors');
 const { spawn } = require('child_process');
-const { green, blue } = require('../utils/colors');
 
 const servicesEnvsAndRepos = {
 	'auth': ['AUTH_SERVICE_CWD', 'authentication-service'],
