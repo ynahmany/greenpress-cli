@@ -1,8 +1,5 @@
 const { green, blue } = require('../utils/colors');
-const { spawn, execSync } = require('child_process');
-const { resolve } = require('path');
-const { rejects } = require('assert');
-const { exit } = require('process');
+const { spawn } = require('child_process');
 
 const servicesEnvsAndRepos = {
 	'auth': ['AUTH_SERVICE_CWD', 'authentication-service'],
@@ -10,7 +7,7 @@ const servicesEnvsAndRepos = {
 	'assets': ['ASSETS_SERVICE_CWD', 'assets-service'],
 	'content': ['CONTENT_SERVICE_CWD', 'content-service'],
 	'admin': ['ADMIN_SERVICE_CWD', 'admin-panel'],
-	'blog-front': ['FRONT_SERVICE_CWD', 'blog-front']
+	'front': ['FRONT_SERVICE_CWD', 'blog-front']
 };
 
 function setStartCommand(program) {
@@ -28,7 +25,7 @@ function setStartCommand(program) {
 						console.log(process.env[servicesEnvsAndRepos[service][0]])
 					} else {
 						console.log(`${service} is not a valid option, exiting!`)
-						exit(1)
+						process.exit(1);
 					}
 
 				}
