@@ -6,7 +6,7 @@ const { green, blue, red } = require('../utils/colors');
 
 // 'create [name] [type] [altFront] [mode]'
 // 'create a new website using greenpress'
-async function create (name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
+async function create ({ name = 'greenpress', type = 'default', altFront = null, mode = 'user' }) {
 	const repoPath = type === 'pm2' ?
 		'https://github.com/greenpress/greenpress-pm2' :
 		'https://github.com/greenpress/greenpress';
