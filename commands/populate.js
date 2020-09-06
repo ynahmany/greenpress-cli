@@ -1,28 +1,14 @@
-const { execSync } = require('child_process');
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
 const { blue } = require('../utils/colors');
+const { populateExec } = require('../services/populate');
 
 // 'populate')
 // 'initiates the database with initial categories, a post, the main menu, and your first administrator user'
 async function populate () {
 	const email = await readCredential("email", 'test@test.com');
 	const password = await readCredential("password", 'admin');
-	const populateCommand = `npm run populate-db -- --credentials ${email}:${password}`;
-
-	execSync(populateCommand, { stdio: 'inherit' }, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
+	populateExec(email, password)
 }
 
 async function readCredential(credentialType, defaultValue) {
