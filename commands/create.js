@@ -1,7 +1,8 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
+const askQuestion = require('../utils/question');
+const accept = require('../utils/acceptance');
 const { green, blue, red } = require('../utils/colors');
-const checkAltFront = require('../services/check-alt-front');
 
 // 'create [name] [type] [altFront] [mode]'
 // 'create a new website using greenpress'
@@ -25,19 +26,24 @@ async function create ({ name = 'greenpress', type = 'default', altFront = null,
 		console.log(stdout);
 	});
 
-	let altFrontUrl;
+	// check if user wants to change the alt front url-
 	if (altFront !== null) {
-		altFrontUrl = altFront;
+		console.log(blue(`setting blog front to ${altFront}`));
+		await changeAltFront(name, altFront);
 	} else {
-		altFrontUrl = await checkAltFront();
-	}
-
-	if (altFrontUrl) {
-		console.log(blue(`setting blog front to ${altFrontUrl}`));
-		const projectPackagePath = `${process.env.PWD}/${name}/package.json`;
-		const projectPackage = require(projectPackagePath);
-		projectPackage.dependencies["@greenpress/blog-front"] = altFrontUrl;
-		fs.writeFileSync(projectPackagePath, JSON.stringify(projectPackage, null, 2));
+		let changeAltFront = await accept(
+		  `Would you like to set alternative blog-front?`,
+		);
+		if (changeAltFront) {
+		    altFront = await askQuestion(
+		        `Select alternative blog-front: `,
+		        null
+			);
+			if (altFront !== null) {
+				console.log(blue(`setting blog front to ${altFront}`));
+				await changeAltFront(name, altFront);
+			}
+		}
 	}
 
 	if (mode === 'user') {
