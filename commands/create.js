@@ -1,8 +1,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
-const askQuestion = require('../utils/question');
-const accept = require('../utils/acceptance');
 const { green, blue, red } = require('../utils/colors');
+const checkAltFront = require('../services/check-alt-front');
 
 // 'create [name] [type] [altFront] [mode]'
 // 'create a new website using greenpress'
@@ -74,24 +73,6 @@ async function create ({ name = 'greenpress', type = 'default', altFront = null,
 	console.log(green('Done!'),
 		`\nEnter ${blue(name)} directory, You can run the application using: npm start`);
 	process.exit(0);
-}
-
-
-async function checkAltFront(defaultValue = undefined) {
-	let result = await accept(`Would you like to set alternative blog-front?`)
-		.then(answer => {
-			if (answer) {
-				return askQuestion(`Select alternative blog-front: `, defaultValue)
-					.then(input => {
-						return input;
-					})
-			} else {
-				console.log(`Using default blog-front`);
-				return undefined;
-			}
-		});
-
-	return result;
 }
 
 module.exports = create;
