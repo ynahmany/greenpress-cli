@@ -47,7 +47,7 @@ switch (argv._[0]) {
 	case 'stop':
 		stop(argv);
 		break;
-	case upgrade:
+	case 'upgrade':
 		upgrade(argv);
 		break;
 }
