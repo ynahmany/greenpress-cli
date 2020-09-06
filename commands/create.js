@@ -3,7 +3,7 @@ const fs = require('fs');
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
 const { green, blue, red } = require('../utils/colors');
-const cloneRepo = require('../services/clone-repo');
+const execute = require('../services/execute');
 
 // 'create [name] [type] [altFront] [mode]'
 // 'create a new website using greenpress'
@@ -14,7 +14,7 @@ async function create ({ name = 'greenpress', type = 'default', altFront = null,
 		'https://github.com/greenpress/greenpress';
 	const createCommand = `git clone ${repoPath} ${name}`;
 	try {
-		const stdout = cloneRepo(createCommand);
+		const stdout = execute(createCommand);
 		console.log(stdout);
 	} catch (err) {
 		console.log(red(err.message));
@@ -42,34 +42,23 @@ async function create ({ name = 'greenpress', type = 'default', altFront = null,
 	}
 
 	if (mode === 'user') {
-		execSync(`cd ${name} && git remote rename origin gp`, (error, stdout, stderr) => {
-			if (error) {
-				console.log(error.message);
-				return;
-			}
-
-			if (stderr) {
-				console.log(stderr);
-				return;
-			}
-
-			console.log(stdout);
-		});
+		try {
+			const output = execute(`cd ${name} && git remote rename origin gp`);
+			console.log(output);
+		} catch (err) {
+			console.log(err);
+			return;
+		}
 	}
 
 	console.log('\n', blue('Application is now installing..'), '\n')
 
-	execSync(`cd ${name} && npm install`, { stdio: 'inherit' }, (error, stdout, stderr) => {
-		if (error) {
-			console.log(red('Failed to install Application'));
-			return;
-		}
-
-		if (stderr) {
-			console.log(red('Error occurred while trying to install the application'));
-			return;
-		}
-	});
+	try {	
+		execute(`cd ${name} && npm install`, { stdio: 'inherit' });
+	} catch (err) {
+		console.log(red('Failed to install Application'));
+		return;
+	}
 
 	console.log(green('Done!'),
 		`\nEnter ${blue(name)} directory, You can run the application using: npm start`);
