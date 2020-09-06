@@ -12,7 +12,7 @@ async function askAlternativeFront(defaultValue) {
 	});
 }
 
-module.exports = async function create(name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
+module.exports = async function createController(name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
 	clone(name, type);
 
 	const altFrontUrl = altFront || await askAlternativeFront();
