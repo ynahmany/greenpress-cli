@@ -1,43 +1,15 @@
 const { execSync } = require('child_process');
 const { green, blue } = require('../utils/colors');
+const { stopDB, stopAllServices, killAllServices } = require('../services/stop');
 
 // 'stop'
 // 'stop greenpress application'
 function stop () {
 
 	console.log(blue('Stopping greenpress...'));
-	try {
-		execSync('npx pm2 stop db', () => {});
-	} catch (e) {
-		//
-	}
-	execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
-	execSync(`npx pm2 kill`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
-
+	stopDB()
+	stopAllServices()
+	killAllServices()
 	console.log(green("Greenpress stopped"));
 	process.exit(0);
 }
