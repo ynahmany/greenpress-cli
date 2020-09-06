@@ -3,28 +3,23 @@ const fs = require('fs');
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
 const { green, blue, red } = require('../utils/colors');
+const cloneRepo = require('../services/clone-repo');
 
 // 'create [name] [type] [altFront] [mode]'
 // 'create a new website using greenpress'
 async function create ({ name = 'greenpress', type = 'default', altFront = null, mode = 'user' }) {
+	// clone the greenpress base repo
 	const repoPath = type === 'pm2' ?
 		'https://github.com/greenpress/greenpress-pm2' :
 		'https://github.com/greenpress/greenpress';
 	const createCommand = `git clone ${repoPath} ${name}`;
-
-	execSync(createCommand, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
+	try {
+		const stdout = cloneRepo(createCommand);
 		console.log(stdout);
-	});
+	} catch (err) {
+		console.log(red(err.message));
+		return;
+	}
 
 	// check if user wants to change the alt front url-
 	if (altFront !== null) {
