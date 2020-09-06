@@ -21,8 +21,8 @@ function renameOrigin(name) {
 	execute(`cd ${name} && git remote rename origin gp`, 'rename greenpress origin to gp');
 }
 
-function installDependencies(name, printStdIO = false) {
-	execute(`cd ${name} && npm install`, 'install application', { stdio: printStdIO ? 'inherit' : 'ignore' });
+function installDependencies(name) {
+	execute(`cd ${name} && npm install`, 'install application', { stdio: 'inherit' });
 }
 
 
