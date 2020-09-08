@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 const { version } = require("./package.json");
-const create = require("./commands/create");
-const missing = require("./commands/missing");
-const populate = require("./commands/populate");
-const start = require("./commands/start");
-const stop = require("./commands/stop");
-const upgrade = require("./commands/upgrade");
+const create = require("./controllers/create");
+const missing = require("./controllers/missing");
+const populate = require("./controllers/populate");
+const start = require("./controllers/start");
+const stop = require("./controllers/stop");
+const upgrade = require("./controllers/upgrade");
 
 const argv = require("yargs")
 .usage("Usage: $0 <command> [options]")
