@@ -16,10 +16,10 @@ const servicesEnvsAndRepos = {
 // 'start [mode]'
 // '-l, --local <services>', 'running selected services in dev mode'
 // 'start Greenpress application'
-async function start (mode = 'user', options) {
+async function start ({mode = 'user', local}) {
 
-	if (mode === 'dev' && options.local) {
-		attachLocalDevServices(options, servicesEnvsAndRepos);
+	if (mode === 'dev' && local) {
+		attachLocalDevServices({ local }, servicesEnvsAndRepos);
 	}
 
 	runWithNPM(mode === 'user' ? [ 'start' ] : [ 'run', 'dev' ], () => {
