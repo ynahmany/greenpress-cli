@@ -6,29 +6,26 @@ const populate = require("./controllers/populate");
 const start = require("./controllers/start");
 const stop = require("./controllers/stop");
 const upgrade = require("./controllers/upgrade");
+const { 
+	createCmd, 
+	missingCmd, 
+	populateCmd,
+	startCmd,
+	stopCmd,
+	upgradeCmd
+} = require("./commands");
 
 const argv = require("yargs")
 .usage("Usage: $0 <command> [options]")
 .help('h')
 .alias('h', 'help')
-.command('create [name] [type] [altFront] [mode]',
-	'Create a new website using greenpress',
-)	
-.command('missing',
-	'Checks if Greenpress dependencies are installed'
-)
-.command('populate',
-	'Initiates the database with initial categories, a post, the main menu, and your first administrator user'
-)
-.command('start [mode]',
-	'Starts Greenpress application'
-)
-.command('stop',
-	'Stop Greenpress application'
-)
-.command('upgrade',
-	'Upgrade modules to their latest version'
-	)
+.alias('l', 'local')
+.command(createCmd)	
+.command(missingCmd)
+.command(populateCmd)
+.command(startCmd)
+.command(stopCmd)
+.command(upgradeCmd)
 .argv;
 
 switch (argv._[0]) {
