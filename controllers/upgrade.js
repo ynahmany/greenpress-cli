@@ -1,14 +1,12 @@
 const fs = require('fs');
-const { getJSON, checkAndUpgradeDependency } = require('../services/upgrade')
-const remotePackagePath = 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
+const { getJSON, checkAndUpgradeDependency, 
+		getLocalPackage, getRemotePackage } = require('../services/upgrade')
 const { blue } = require('../utils/colors');
 
 async function upgradeController() {
-	const localPackagePath = process.env.PWD + '/package.json';
-
 	// create local json objects for package.json from local and remote repos
-	const localPackage = require(localPackagePath);
-	const { dependencies = {} } = await getJSON(remotePackagePath);
+	const localPackage = getLocalPackage();
+	const { dependencies = {} } = await getJSON(getRemotePackage());
 	const localDependencies = localPackage.dependencies || {};
 
 	console.log('checking for outdated dependencies...');
