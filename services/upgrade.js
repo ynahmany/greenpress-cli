@@ -28,7 +28,16 @@ async function getJSON(url) {
 	});
 }
 
+function getLocalPackage() {
+	return require(process.env.PWD + '/package.json');
+}
+
+function getRemotePackage() {
+	return 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
+}
 module.exports = {
 	checkAndUpgradeDependency,
-	getJSON
+	getJSON,
+	getLocalPackage,
+	getRemotePackage
 }
