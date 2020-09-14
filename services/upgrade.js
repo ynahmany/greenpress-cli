@@ -1,6 +1,8 @@
 const accept = require('../utils/acceptance');
+const fs = require('fs');
 const https = require('https');
 const { green, yellow } = require('../utils/colors');
+const localPackagePath = process.env.PWD + '/package.json';
 
 function checkAndUpgradeDependency(name, currentValue, remoteValue) {
 	return accept(`Would you like to upgrade to remote's version?`)
@@ -29,15 +31,20 @@ async function getJSON(url) {
 }
 
 function getLocalPackage() {
-	return require(process.env.PWD + '/package.json');
+	return require(localPackagePath);
 }
 
-function getRemotePackage() {
-	return 'https://raw.githubusercontent.com/greenpress/greenpress/master/package.json';
+async function getRemotePackage() {
+	return await getJSON('https://raw.githubusercontent.com/greenpress/greenpress/master/package.json');
 }
+
+function saveUpdatedPackage(localPackage) {
+	fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 2));
+}
+
 module.exports = {
 	checkAndUpgradeDependency,
-	getJSON,
+	saveUpdatedPackage,
 	getLocalPackage,
 	getRemotePackage
 }
