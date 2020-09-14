@@ -1,12 +1,11 @@
-const fs = require('fs');
-const { getJSON, checkAndUpgradeDependency, 
+const { checkAndUpgradeDependency, saveUpdatedPackage,
 		getLocalPackage, getRemotePackage } = require('../services/upgrade')
 const { blue } = require('../utils/colors');
 
 async function upgradeController() {
 	// create local json objects for package.json from local and remote repos
 	const localPackage = getLocalPackage();
-	const { dependencies = {} } = await getJSON(getRemotePackage());
+	const { dependencies = {} } = await getRemotePackage();
 	const localDependencies = localPackage.dependencies || {};
 
 	console.log('checking for outdated dependencies...');
@@ -26,8 +25,8 @@ async function upgradeController() {
 		}
 	}
 
-	// // save updated json
-	fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 2));
+	// save updated json
+	saveUpdatedPackage(localPackage);
 	console.log('Upgrade ended successfully!');
 }
 
