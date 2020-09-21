@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-const { green, blue } = require('../utils/colors');
+const { green, blue, red } = require('../utils/colors');
 
 function stopCommand() {
 
@@ -7,36 +7,47 @@ function stopCommand() {
 	try {
 		execSync('npx pm2 stop db', () => {});
 	} catch (e) {
-		//
+		console.log(red(`An error occured: ${e.message}`));
+		process.exit(1);
 	}
 
-	execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
+	try {
+		execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
 	
-	execSync(`npx pm2 kill`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	} catch (e) {
+		console.log(red(`An error occured: ${e.message}`));
+		process.exit(1);
+	}
+	
+	try {
+		execSync(`npx pm2 kill`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
+	
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	} catch (e) {
+		console.log(red(`An error occured: ${e.message}`));
+		process.exit(1);
+	}
 
 	console.log(green("Greenpress stopped"));
 	process.exit(0);
