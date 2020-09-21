@@ -12,13 +12,16 @@ A command-line interface to help you create and manage your Greenpress applicati
 * version: provides information about installed cli's version.
   usage: greenpress -V, greenpress --version
 
-* start: starts app
-  usage: greenpress start [mode [-l, --local= \<services\>]]
+* start: starts app (**Currently doesn't work on Windows**)  
+  usage: greenpress start [mode [-l, --local= \<services\>][-x, --exclude = \<services\>][-d, --debug]]  
   options:
     * mode: choose developer (input: dev) or user (no input required) application mode
       * local: if in dev mode and would like to run one of the key services (auth, secretes, assets, content, admin, front) from your local dev folder (my-app/dev), use the local option. E.g.:
-	  > greenpress start dev -l assets,front
-      > greenpress start dev --local=assets,front
+	  > greenpress start dev -l assets,front  
+      > greenpress start dev --local=assets,front  
+    * exclude: choose which services not to start. In production, the default will be to exclude the db service. E.g:  
+      	> greenpress start -x none
+    * debug: keeps the start process alive and display live application logs
 
 * stop: shuts down app
   usage: greenpress stop
