@@ -10,33 +10,41 @@ function stopCommand() {
 		//
 	}
 
-	execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
+	try {
 
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
+	} catch (e) {
+		execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
 	
-	execSync(`npx pm2 kill`, (error, stdout, stderr) => {
-		if (error) {
-			console.log(error.message);
-			return;
-		}
-
-		if (stderr) {
-			console.log(stderr);
-			return;
-		}
-
-		console.log(stdout);
-	});
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	}
+	
+	try {
+		execSync(`npx pm2 kill`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
+	
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	} catch (e) {
+		//
+	}
 
 	console.log(green("Greenpress stopped"));
 	process.exit(0);
