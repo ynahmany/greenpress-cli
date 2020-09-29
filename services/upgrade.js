@@ -2,6 +2,7 @@ const accept = require('../utils/acceptance');
 const fs = require('fs');
 const https = require('https');
 const { green, yellow } = require('../utils/colors');
+const execute = require('../utils/execute');
 const localPackagePath = process.env.PWD + '/package.json';
 
 function checkAndUpgradeDependency(name, currentValue, remoteValue) {
@@ -38,8 +39,14 @@ async function getRemotePackage() {
 	return await getJSON('https://raw.githubusercontent.com/greenpress/greenpress/master/package.json');
 }
 
-function saveUpdatedPackage(localPackage) {
-	fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 2));
+async function saveUpdatedPackage(localPackage) {
+	try {
+		fs.writeFileSync(localPackagePath, JSON.stringify(localPackage, null, 2));
+	} catch (e) {
+		console.log(`An error occured while saving package.json: ${e.message}`);
+	}
+
+	return execute('npm install');
 }
 
 module.exports = {
