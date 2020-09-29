@@ -11,5 +11,6 @@ require('./commands/populate')(program)
 require('./commands/start')(program)
 require('./commands/stop')(program)
 require('./commands/missing')(program)
+require('./commands/service')(program)
 
 program.parse(process.argv)
