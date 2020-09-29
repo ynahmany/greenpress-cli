@@ -6,10 +6,10 @@ A command-line interface to help you create and manage your Greenpress applicati
 > npm install -g @greenpress/cli
 
 ## Commands
-* help: provides information about all the supported commands.
+* help: provides information about all the supported commands  
   usage: greenpress h, greenpress --help
 
-* version: provides information about installed cli's version.
+* version: provides information about installed cli's version  
   usage: greenpress -V, greenpress --version
 
 * start: starts app (**Currently doesn't work on Windows**)  
@@ -23,13 +23,13 @@ A command-line interface to help you create and manage your Greenpress applicati
       	> greenpress start -x none
     * debug: keeps the start process alive and display live application logs
 
-* stop: shuts down app
+* stop: shuts down app  
   usage: greenpress stop
 
-* upgrade: compares local dependencies version with latest Greenpress version, allow user to upgrade local dependencies on will.
+* upgrade: compares local dependencies version with latest Greenpress version, allow user to upgrade local dependencies on will  
   usage: greenpress upgrade
 
-* create: create a new app using greenpress
+* create: create a new app using greenpress  
   usage: greenpress create [name] [type] [altFront] [mode]
   options:
     * name: choose app name
@@ -37,8 +37,17 @@ A command-line interface to help you create and manage your Greenpress applicati
     * altFront: choose alternative app frontend source (input: alternative frontend source's url)
     * mode: choose developer (input: dev) or user (no input required) mode
 
-* populate: create initial content and admin user for your app
+* populate: create initial content and admin user for your app  
   usage: greenpress populate
 
 * missing: checks if dependencies are install. If not, provides an installation link for them, else, displays their version number.
   usage: greenpress missing
+
+* service: handles actions for easier development of services  
+  usage: greenpress service [action] [services]  
+  supported services: auth, admin, assets, secrets, content, front  
+  supported actions:  
+  * create: creates a dev folder (if doesn't exist) and clones the requested services into it  
+      options:  
+      * -b/--branch <branch_name>: clones the services immeditaly to the requested branch (**if multiple services are requested, all must have the same branch name**)
+  
