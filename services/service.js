@@ -18,7 +18,10 @@ function createDevDir() {
 
 async function createServices(services, branchName = undefined) {
 	for (let service of services) {
-		let cloneCommand = `cd ${devDir} && git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]}`
+		let cloneCommand = `cd ${devDir} && 
+							git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]} &&
+							cd ${repos[service].substring(repos[service].lastIndexOf('/') + 1)} &&
+							npm install`
 		try {
 			execSync(cloneCommand, (error, stdout, stderr) => {
 				if (error) {
