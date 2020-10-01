@@ -1,15 +1,51 @@
+const { execSync } = require('child_process');
 const { green, blue, red } = require('../utils/colors');
-const execute = require('../utils/execute');
 
 function stopCommand() {
 
 	console.log(blue('Stopping greenpress...'));
-	let errN = execute('npx pm2 stop db', 'stop db process') ? 0 : 1;
-	errN += execute('npx pm2 stop all', 'stop all services') ? 0 : 1;
-	errN += execute('npx pm2 kill', 'kill all services') ? 0 : 1;
+	try {
+		execSync('npx pm2 stop db', () => {});
+	} catch (e) {
+		console.log(red(`An error occured: ${e.message}`));
+		process.exit(1);
+	}
 
-	if (errN) {
-		console.log(red(`Greenpress failed to stop, failed on ${errN} steps.`));
+	try {
+		execSync(`npx pm2 stop all`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
+	
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	} catch (e) {
+		console.log(red(`An error occured: ${e.message}`));
+		process.exit(1);
+	}
+	
+	try {
+		execSync(`npx pm2 kill`, (error, stdout, stderr) => {
+			if (error) {
+				console.log(error.message);
+				return;
+			}
+	
+			if (stderr) {
+				console.log(stderr);
+				return;
+			}
+	
+			console.log(stdout);
+		});
+	} catch (e) {
+		console.log(red(`An error occured: ${e.message}`));
 		process.exit(1);
 	}
 
