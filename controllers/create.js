@@ -1,7 +1,9 @@
 const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
 const { clone, setServiceVersion, renameOrigin, installDependencies } = require('../services/create');
-const { green, blue } = require('../utils/colors');
+const { red, green, blue } = require('../utils/colors');
+const execute = require('../utils/execute');
+const localCompositionGuide = 'https://docs.greenpress.info/guide/local-docker-composition.html'
 
 async function askAlternativeFront(defaultValue) {
 	return accept(`Would you like to set alternative blog-front?`).then(answer => {
@@ -13,7 +15,10 @@ async function askAlternativeFront(defaultValue) {
 }
 
 module.exports = async function createController(name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
-	clone(name, type);
+	if (!(await clone(name, type))) {
+		console.log(red(`Failed to clone application!`));
+		process.exit(1);
+	}
 
 	const altFrontUrl = altFront || await askAlternativeFront();
 
@@ -25,11 +30,7 @@ module.exports = async function createController(name = 'greenpress', type = 'de
 		renameOrigin(name);
 	}
 
-	console.log('\n', blue('Application is now installing..'), '\n');
-
-	installDependencies(name);
-
 	console.log(green('Done!'),
-		`\nEnter ${blue(name)} directory, You can run the application using: greenpress start dev`);
+		`\nEnter ${blue(name)} directory, You can run the application using: ${blue('greenpress start')}`);
 	process.exit(0);
 }

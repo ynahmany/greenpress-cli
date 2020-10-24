@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const execute  = require('../utils/execute')
 const { existsSync, mkdirSync } = require('fs');
 const devDir = process.cwd() + '/dev';
 const repos = {
@@ -7,7 +7,8 @@ const repos = {
 	'secrets': 'https://github.com/greenpress/secrets-service',
 	'assets': 'https://github.com/greenpress/assets-service',
 	'content': 'https://github.com/greenpress/content-service',
-	'front': 'https://github.com/greenpress/blog-front'
+	'front': 'https://github.com/greenpress/blog-front',
+	'drafts': 'https://github.com/greenpress/drafts-service'
 };
 
 function createDevDir() {
@@ -22,23 +23,9 @@ async function createServices(services, branchName = undefined) {
 							git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]} &&
 							cd ${repos[service].substring(repos[service].lastIndexOf('/') + 1)} &&
 							npm install`
-		try {
-			execSync(cloneCommand, (error, stdout, stderr) => {
-				if (error) {
-					console.log(error.message);
-					return;
-				}
-	
-				if (stderr) {
-					console.log(stderr);
-					return;
-				}
-				console.log(stdout);
-			});
-		} catch (e) {
-			console.log(`An error occured during creation of ${service}: ${e.message}`)
+		if (!(await execute(cloneCommand, `create ${service} service`))) {
+			errN += 1;
 		}
-
 	}
 }
 

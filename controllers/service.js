@@ -1,4 +1,6 @@
-const { createServices, createDevDir } = require('../services/service')
+const { createServices, createDevDir } = require('../services/service');
+const { red, green } = require('../utils/colors');
+const { exitOverride } = require('commander');
 
 async function serviceCommand(action, services, options) {
 	if (action === 'create') {
@@ -11,7 +13,14 @@ async function createController(services, branch = undefined) {
 	createDevDir();
 
 	// clone services to dev repo
-	createServices(services, branch);
+	const errN = await createServices(services, branch);
+	if (errN) {
+		console.log(red(`Failed to create ${errN} services`));
+		process.exit(1);
+	}
+
+	console.log(green('Successfully created all required services!'));
+	process.exit(0);
 }
 
 module.exports = {

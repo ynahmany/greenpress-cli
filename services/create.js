@@ -2,12 +2,12 @@ const fs = require('fs');
 const execute = require('../utils/execute');
 const { blue } = require('../utils/colors');
 
-function clone(name, type = 'default') {
+async function clone(name, type = 'default') {
 	const repoPath = type === 'pm2' ?
 		'https://github.com/greenpress/greenpress-pm2' :
 		'https://github.com/greenpress/greenpress';
 
-	execute(`git clone ${repoPath} ${name}`, 'clone greenpress')
+	return await execute(`git clone ${repoPath} ${name}`, 'clone greenpress')
 }
 
 function setServiceVersion(packagePath, service, version) {

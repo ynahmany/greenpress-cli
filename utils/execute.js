@@ -1,7 +1,7 @@
 const { red } = require('./colors');
 const { execSync } = require('child_process');
 
-module.exports = function execute(cmd, actionDescription, execProps = null) {
+module.exports = async function execute(cmd, actionDescription, execProps = null) {
 	try {
 		execSync(cmd, execProps, (error, stdout, stderr) => {
 			if (error) {
@@ -11,7 +11,7 @@ module.exports = function execute(cmd, actionDescription, execProps = null) {
 			}
 			
 			if (stderr) {
-				console.log(red(actionDescription ? `Error occurred while trying to ${actionDescription}: ${error.message}` : stderr));
+				console.log(red(actionDescription ? `Error occurred while trying to ${actionDescription}: ${stderr.message}` : stderr));
 				
 				return false;
 			}
