@@ -1,6 +1,8 @@
-const execute  = require('../utils/execute')
+const execute  = require('../utils/execute');
 const { existsSync, mkdirSync } = require('fs');
-const devDir = process.cwd() + '/dev';
+const { join } = require('path');
+
+const devDir = join(process.cwd(), 'dev');
 const repos = {
 	'auth': 'https://github.com/greenpress/authentication-service',
 	'admin': 'https://github.com/greenpress/admin-panel',
@@ -23,6 +25,7 @@ async function createServices(services, branchName = undefined) {
 							git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]} &&
 							cd ${repos[service].substring(repos[service].lastIndexOf('/') + 1)} &&
 							npm install`
+		console.log(cloneCommand);
 		if (!(await execute(cloneCommand, `create ${service} service`))) {
 			errN += 1;
 		}
