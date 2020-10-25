@@ -1,4 +1,5 @@
 const execute  = require('../utils/execute');
+const { red, green } = require('../utils/colors');
 const { existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 
@@ -20,16 +21,27 @@ function createDevDir() {
 }
 
 async function createServices(services, branchName = undefined) {
+	let errN = 0;
 	for (let service of services) {
-		let cloneCommand = `cd ${devDir} && 
-							git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]} &&
-							cd ${repos[service].substring(repos[service].lastIndexOf('/') + 1)} &&
-							npm install`
-		console.log(cloneCommand);
-		if (!(await execute(cloneCommand, `create ${service} service`))) {
+		let cloneCommand = `git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]}`;
+		if (!(await execute(cloneCommand, `create ${service} service`, { cwd: devDir }))) {
+			console.log(red(`Failed to clone ${service}`));
 			errN += 1;
+			continue;
 		}
+		
+		console.log(join(devDir, repos[service].substring(repos[service].lastIndexOf('/') + 1)));
+		if (!(await execute('npm install', `install local ${service}`, 
+			{ cwd: join(devDir, repos[service].substring(repos[service].lastIndexOf('/') + 1)) }))) {
+			console.log(red(`Failed to install ${service}`));
+			errN += 1;
+			continue;
+		}
+
+		console.log(green(`Successfully created local ${service}`));
 	}
+
+	return errN;
 }
 
 module.exports = {

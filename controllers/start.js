@@ -1,8 +1,8 @@
-const { green, blue, red } = require('../utils/colors');
 const { chooseLocal, getAppArgs } = require('../services/start');
+const { green, blue, red } = require('../utils/colors');
+const { appendToDockerConfig, cleanDockerConfig } = require('../utils/dockerConfig');
 const { spawn} = require('child_process');
 const { join } = require('path');
-const { appendToDockerConfig, cleanDockerConfig } = require('../utils/dockerConfig');
 const exec = require('util').promisify(require('child_process').exec);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 

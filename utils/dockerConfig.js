@@ -25,7 +25,9 @@ async function appendToDockerConfig(data) {
 
 async function cleanDockerConfig() {
 	try {
-		fs.truncateSync(composeConfigFile, 0);
+		if (fs.existsSync(composeConfigFile)) {
+			fs.truncateSync(composeConfigFile, 0);
+		}
 	} catch (e) {
 		console.log(red(`Failed to clean greenpress.local.env. Error: ${e.message}`));
 		return false;

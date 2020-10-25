@@ -1,6 +1,7 @@
 const fs = require('fs');
 const execute = require('../utils/execute');
 const { blue } = require('../utils/colors');
+const { join } = require('path');
 
 async function clone(name, type = 'default') {
 	const repoPath = type === 'pm2' ?
@@ -18,11 +19,11 @@ function setServiceVersion(packagePath, service, version) {
 }
 
 function renameOrigin(name) {
-	execute(`cd ${name} && git remote rename origin gp`, 'rename greenpress origin to gp');
+	execute(`git remote rename origin gp`, 'rename greenpress origin to gp', { cwd: join(process.cwd(), name) });
 }
 
 function installDependencies(name) {
-	execute(`cd ${name} && npm install`, 'install application', { stdio: 'inherit' });
+	execute(`npm install`, 'install application', { stdio: 'inherit', cwd: join(process.cwd(), name) });
 }
 
 
