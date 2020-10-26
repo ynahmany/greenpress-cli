@@ -1,5 +1,5 @@
 const execute  = require('../utils/execute');
-const { red, green } = require('../utils/colors');
+const { blue, red, green } = require('../utils/colors');
 const { existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 
@@ -24,13 +24,14 @@ async function createServices(services, branchName = undefined) {
 	let errN = 0;
 	for (let service of services) {
 		let cloneCommand = `git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]}`;
+		console.log(blue(`Cloning ${service}`));
 		if (!(await execute(cloneCommand, `create ${service} service`, { cwd: devDir }))) {
 			console.log(red(`Failed to clone ${service}`));
 			errN += 1;
 			continue;
 		}
 		
-		console.log(join(devDir, repos[service].substring(repos[service].lastIndexOf('/') + 1)));
+		console.log(blue(`Installing ${service}, might take some time`));
 		if (!(await execute('npm install', `install local ${service}`, 
 			{ cwd: join(devDir, repos[service].substring(repos[service].lastIndexOf('/') + 1)) }))) {
 			console.log(red(`Failed to install ${service}`));
