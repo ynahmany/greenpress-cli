@@ -1,7 +1,7 @@
 const { chooseLocal, getAppArgs } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../utils/dockerConfig');
-const { spawn} = require('child_process');
+const { execSync } = require('child_process');
 const { join } = require('path');
 const exec = require('util').promisify(require('child_process').exec);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -28,17 +28,12 @@ async function startCommand (mode = 'user', options) {
 
 	const appArgs = await getAppArgs(mode);
 	const childArgs = { 
-		detached: true,
 		cwd: join(process.cwd(), 'compose')
 	};
-
+	console.log(appArgs)
 	console.log(blue('Initializing Greenpress..'));
 	
-	const child = spawn('npm', appArgs, childArgs);
-	child.on('error', (error) => {
-		console.log(`error: ${error}`);
-		process.exit(1);
-	});
+	execSync( ['npm', ...appArgs].join(' '), childArgs);
 
 	const serverStatus = await checkServerUp(0);
 	if (serverStatus) {
@@ -67,7 +62,7 @@ async function checkServerUp(idx) {
 		} 
 		
 		if ('PM2 successfully stopped' === serverOutput) {
-			console.log(red('An error occured, check server logs to see what happend'));
+			console.log(red('An error occurred, check server logs to see what happened'));
 			process.exit(1);
 		}
 	} catch (e) {
