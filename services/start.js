@@ -16,7 +16,7 @@ const servicesEnvsAndRepos = {
 
 function getDevPath(service) {
 	return servicesEnvsAndRepos[service] !== undefined ?
-	       `${servicesEnvsAndRepos[service][0]}=${join('dev', servicesEnvsAndRepos[service][1])}/n` :
+	       `${servicesEnvsAndRepos[service][0]}=${'dev/' + servicesEnvsAndRepos[service][1]}\n` :
 	       '';
 }
 
@@ -28,7 +28,7 @@ async function chooseLocal(mode, localServices) {
 			const servicePath = getDevPath(service);
 			if (servicePath !== '') {
 				console.log(green(`Set ${service} to dev path!`));
-				servicesPaths += `${servicePath}/n`;
+				servicesPaths += `${servicePath}\n`;
 			} else {
 				console.log(red(`${service} is not a valid option!`));
 				return false;

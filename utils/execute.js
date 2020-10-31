@@ -1,4 +1,4 @@
-const { red } = require('./colors');
+const { red } = require('../utils/colors');
 const { execSync } = require('child_process');
 
 module.exports = async function execute(cmd, actionDescription, execProps = null) {

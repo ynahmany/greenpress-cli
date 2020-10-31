@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { join } = require('path');
-const { red } = require('./colors');
+const { red } = require('../utils/colors');
 
 const composeConfigFile = join(process.cwd(), 'compose', 'greenpress.local.env');
 
