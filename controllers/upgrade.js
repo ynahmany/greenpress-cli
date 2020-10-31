@@ -27,10 +27,10 @@ async function upgradeController() {
 
 	// save updated json
 	if (!(await saveUpdatedPackage(localPackage))) {
-		console.log('Upgrade failed!');
+		console.log(red('Upgrade failed!'));
 	}
 	
-	console.log('Upgrade ended successfully!');
+	console.log(green('Upgrade ended successfully!'));
 }
 
 module.exports = upgradeController

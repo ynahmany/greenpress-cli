@@ -1,10 +1,9 @@
-const { chooseLocal, getAppArgs } = require('../services/start');
+const { chooseLocal, getAppArgs, checkServerUp } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../utils/dockerConfig');
 const { execSync } = require('child_process');
 const { join } = require('path');
-const exec = require('util').promisify(require('child_process').exec);
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 
 async function startCommand (mode = 'user', options) {
 	if (!(await cleanDockerConfig())) {
@@ -30,7 +29,7 @@ async function startCommand (mode = 'user', options) {
 	const childArgs = { 
 		cwd: join(process.cwd(), 'compose')
 	};
-	console.log(appArgs)
+	
 	console.log(blue('Initializing Greenpress..'));
 	
 	execSync( ['npm', ...appArgs].join(' '), childArgs);
@@ -45,45 +44,6 @@ async function startCommand (mode = 'user', options) {
 
 	console.log('Server took to long to run');
 	process.exit(1);
-}
-
-async function checkServerUp(idx) {
-	const sleepTime = 5000;
-	if (idx == 25) {
-		return false;
-	}
-
-	try {
-		const { stdout } = await exec('docker logs greenpress_greenpress_1');
-	
-		const serverOutput = await checkServerLog(stdout);
-		if ('READY  Server listening' === serverOutput) {
-			return true;
-		} 
-		
-		if ('PM2 successfully stopped' === serverOutput) {
-			console.log(red('An error occurred, check server logs to see what happened'));
-			process.exit(1);
-		}
-	} catch (e) {
-		await sleep(sleepTime);
-		return checkServerUp(idx + 1);
-	}
-	
-	await sleep(sleepTime);
-	return checkServerUp(idx + 1);
-}
-
-async function checkServerLog(stdout) {
-	if (stdout.toString().includes('READY  Server listening')) {
-		return 'READY  Server listening';
-	}
-	
-	if (stdout.toString().includes('PM2 successfully stopped')) {
-		return 'PM2 successfully stopped';
-	}
-
-	return '';
 }
 
 module.exports = {

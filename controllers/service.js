@@ -1,6 +1,5 @@
 const { createServices, createDevDir } = require('../services/service');
 const { red, green } = require('../utils/colors');
-const { exitOverride } = require('commander');
 
 async function serviceCommand(action, services, options) {
 	if (action === 'create') {
