@@ -1,6 +1,6 @@
 const { chooseLocal, getAppArgs, checkServerUp } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
-const { appendToDockerConfig, cleanDockerConfig } = require('../utils/dockerConfig');
+const { appendToDockerConfig, cleanDockerConfig } = require('../services/docker-service');
 const { execSync } = require('child_process');
 const { join } = require('path');
 

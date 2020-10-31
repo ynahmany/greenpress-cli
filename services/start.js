@@ -1,4 +1,4 @@
-const { appendToDockerConfig } = require('../utils/dockerConfig');
+const { appendToDockerConfig } = require('../services/docker-service');
 const { join } = require('path');
 const { green, blue, red } = require('../utils/colors');
 const exec = require('util').promisify(require('child_process').exec);
