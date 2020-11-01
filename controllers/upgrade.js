@@ -1,6 +1,6 @@
 const { checkAndUpgradeDependency, saveUpdatedPackage,
 		getLocalPackage, getRemotePackage } = require('../services/upgrade')
-const { blue } = require('../utils/colors');
+const { blue, green, red } = require('../utils/colors');
 
 async function upgradeController() {
 	// create local json objects for package.json from local and remote repos
