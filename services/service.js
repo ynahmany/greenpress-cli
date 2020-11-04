@@ -45,7 +45,12 @@ async function createServices(services, branchName = undefined) {
 	return errN;
 }
 
+function getServicesList() {
+	return Object.keys(repos).join(', ');
+}
+
 module.exports = {
 	createServices,
-	createDevDir
+	createDevDir,
+	getServicesList
 }
