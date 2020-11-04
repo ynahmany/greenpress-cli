@@ -40,7 +40,7 @@ async function createConfigFile(name) {
 	module.exports = {
 		services: {
 			front: {
-				theme: 'global:' + path.join(process.cwd(), 'themes', ${name})
+				theme: 'global:' + path.join(process.cwd(), 'themes', '${name}')
 			}
 		}
 	}
