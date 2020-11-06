@@ -35,12 +35,12 @@ async function copyBaseTheme(name, fromTheme) {
 async function createConfigFile(name) {
 	const configContent = `//This file was generated using Greenpress CLI. For more information about the config file, go to https://docs.greenpress.info/guide/greenpress-configuration.html.
 	
-	const path = require('path');
+	const { join } = require('path');
 
 	module.exports = {
 		services: {
 			front: {
-				theme: 'global:' + path.join(process.cwd(), 'themes', '${name}')
+				theme: 'global:' + join(process.cwd(), 'themes', '${name}')
 			}
 		}
 	}

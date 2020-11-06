@@ -3,7 +3,7 @@ const { join } = require('path');
 const { copyBaseTheme, createConfigFile } = require('../services/theme');
 const { blue, green, red } = require('../utils/colors');
 
-const configeGuide = 'https://docs.greenpress.info/guide/greenpress-configuration.html';
+const configeGuide = 'https://docs.greenpress.info/services/blog-front/#configuration';
 const themeConfigurationDescription = `To set up your own theme, follow our guide at ${configeGuide}`;
 
 async function themeCommand(name, options) {
