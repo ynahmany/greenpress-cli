@@ -50,7 +50,7 @@ A command-line interface to help you create and manage your Greenpress applicati
   * create: creates a dev folder (if doesn't exist) and clones the requested services into it  
       options:  
       * -b/--branch <branch_name>: clones the services immeditaly to the requested branch (**if multiple services are requested, all must have the same branch name**)
- * theme: create costum themes  
+ * theme: create custom themes  
    usage: greenpress theme [theme-name] [--from=base-theme]  
    options:  
    * --from: choose a theme to create the new theme from (if not used, will use 'classic' theme as default)
