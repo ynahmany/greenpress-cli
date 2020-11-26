@@ -2,7 +2,6 @@ const askQuestion = require('../utils/question');
 const accept = require('../utils/acceptance');
 const { clone, setServiceVersion, renameOrigin, SetupEnvForWindows } = require('../services/create');
 const { red, green, blue } = require('../utils/colors');
-const fs = require('fs');
 const localCompositionGuide = 'https://docs.greenpress.info/guide/local-docker-composition.html'
 
 async function askAlternativeFront(defaultValue) {
@@ -33,7 +32,7 @@ module.exports = async function createController(name = 'greenpress', type = 'de
 	if (process.platform === 'win32') {
 		if (!(await SetupEnvForWindows(name))) {
 			console.log(red(`Failed to set env correctly. To do so manually, follow our guide: ${blue(localCompositionGuide)}`));
-			process.exit(1);	
+			process.exit(1);
 		}
 	}
 
