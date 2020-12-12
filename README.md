@@ -12,7 +12,7 @@ A command-line interface to help you create and manage your Greenpress applicati
 * **version**: provides information about installed cli's version
   usage: greenpress -V, greenpress --version
 
-* **start**: starts app (**Currently doesn't work on Windows**)
+* **start**: starts app
   usage: greenpress start [mode [-l, --local= \<services\>][-x, --exclude = \<services\>][-d, --debug]]
   options:
     * mode: choose developer (input: dev) or user (no input required) application mode
