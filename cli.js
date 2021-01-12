@@ -13,5 +13,6 @@ require('./commands/stop')(program)
 require('./commands/missing')(program)
 require('./commands/service')(program)
 require('./commands/theme')(program)
+require('./commands/deploy')(program)
 
 program.parse(process.argv)
