@@ -3,11 +3,21 @@ const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../services/docker-service');
 const { execSync } = require('child_process');
 const { askQuestion } = require('../utils/question');
+const crypto = require('crypto');
 const { join } = require('path');
+let currentDate;
+let random;
+let hash;
 const addOns = {
     redis: 'heroku-redis',
     papertrail: 'papertrail'
 }
+const secrets = [ "JWT_SECRET", 
+                  "REFRESH_TOKEN_SECRET", 
+                  "SECRETS_SERVICE_SECRET", 
+                  "ASSETS_SECRETS_TOKEN", 
+                  "INTERNAL_SECRET" 
+               ]
 async function deployCommand (type) {
     switch (type) {  
         case 'heroku': 
@@ -47,8 +57,19 @@ async function deployHeroku() {
         console.log(red(`failed to set mongo uri`));
         process.exit(1);       
     }
+    secrets.forEach(secret => {
+        currentDate = new Date().valueOf().toString()
+        random = Math.random().toString()
+        hash = crypto.createHash('sha1').update(currentDate + random).digest('hex');
+        if (!execute(`heroku config:set ${secret}=${hash}`, 'set secret to enviroment varibles')) {
+            console.log(red(`hash to environment ${secret} failed`));
+            process.exit(1);         
+        }
+    })
 }
 
 module.exports = {
 	deployCommand
 }
+
+

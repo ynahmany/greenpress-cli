@@ -18,10 +18,18 @@
   "author": "David Meir-Levy <davidmeirlevy@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "^4.0.1"
+    "commander": "^4.0.1",
+    "crypto": "^1.0.1",
+    "pre-push": "^0.1.1"
   },
   "bugs": {
     "url": "https://github.com/greenpress/greenpress-cli/issues"
+  },
+  "pre-push": [
+    "test"
+  ],
+  "scripts": {
+    "test": "echo 1"
   },
   "homepage": "https://github.com/greenpress/greenpress-cli#readme",
   "devDependencies": {}
