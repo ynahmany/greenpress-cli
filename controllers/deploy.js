@@ -1,18 +1,5 @@
 const execute = require('../utils/execute');
-const { getRandomHash } = require('../services/hashing');
-const { createAddOn, addVariable } = require('../services/heroku');
 const { green, red } = require('../utils/colors');
-const askQuestion = require('../utils/question');
-const addOns = {
-	redis: 'heroku-redis',
-	papertrail: 'papertrail'
-}
-const secrets = [ "JWT_SECRET",
-	"REFRESH_TOKEN_SECRET",
-	"SECRETS_SERVICE_SECRET",
-	"ASSETS_SECRETS_TOKEN",
-	"INTERNAL_SECRET"
-]
 
 async function deployCommand(type, { app }) {
 	switch (type) {

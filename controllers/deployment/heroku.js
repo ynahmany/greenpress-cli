@@ -1,34 +1,25 @@
-const execute = require('../utils/execute');
-const { getRandomHash } = require('../services/hashing');
-const { createAddOn, addVariable } = require('../services/heroku');
-const { green, red } = require('../utils/colors');
-const askQuestion  = require('../utils/question');
+const execute = require('../../utils/execute');
+const { getRandomHash } = require('../../services/hashing');
+const { createAddOn, addVariable } = require('../../services/heroku');
+const { green, red, blue } = require('../../utils/colors');
+const askQuestion = require('../../utils/question');
 const addOns = {
 	redis: 'heroku-redis',
 	papertrail: 'papertrail'
 }
-const secrets = [ "JWT_SECRET",
+const secrets = [
+	"JWT_SECRET",
 	"REFRESH_TOKEN_SECRET",
 	"SECRETS_SERVICE_SECRET",
 	"ASSETS_SECRETS_TOKEN",
 	"INTERNAL_SECRET"
 ]
 
-async function deploymentCommand(type) {
-	switch (type) {
-		case 'heroku':
-			console.log(green('deploying to heroku...'));
-			await deployHeroku();
-			break;
-		default:
-			console.log(red(`${type} is not supported it`));
-			process.exit(1);
-	}
-}
-
-async function deployHeroku() {
+async function deployHeroku({ mongo }) {
 	if (!await execute('heroku login', 'login to heroku')) {
 		console.log(red(`login failed`));
+		console.log('Make sure you have installed the Heroku CLI an logged in to your account.');
+		console.log('You can find more help at this manual: ' + blue('https://devcenter.heroku.com/articles/heroku-cli'));
 		process.exit(1);
 	}
 	console.log(green(`login successfully to heroku`));
@@ -40,17 +31,17 @@ async function deployHeroku() {
 		process.exit(1);
 	}
 	for (let key in addOns) {
-		if(!await createAddOn(key, addOns[key], appName)) {
-			console.log(red(`failed to install ${key} to ${appName}`));
+		if (!await createAddOn(key, addOns[key], appName)) {
+			console.log(red(`failed to install ${key} in ${appName}`));
 			process.exit(1);
 		}
 	}
-	const mongoUri = (await askQuestion('what is your mongo URI:', '')) || '';
+	const mongoUri = (await askQuestion('what is your mongo URI:', mongo)) || mongo;
 	if (!mongoUri.trim()) {
 		console.log(red(`mongo URI must be provided`));
 		process.exit(1);
 	}
-	if(!await addVariable('MONGODB_URI', mongoUri, appName)) {
+	if (!await addVariable('MONGODB_URI', mongoUri, appName)) {
 		console.log(red(`failed to set mongo uri`));
 		process.exit(1);
 	}
@@ -63,7 +54,7 @@ async function deployHeroku() {
 }
 
 module.exports = {
-	deploymentCommand
+	deployHeroku
 }
 
 
