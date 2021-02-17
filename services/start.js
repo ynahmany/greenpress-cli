@@ -1,5 +1,7 @@
+const fs = require('fs');
+const { join } = require('path');
 const { appendToDockerConfig } = require('../services/docker-service');
-const { green, blue, red } = require('../utils/colors');
+const { green, blue, red, yellow } = require('../utils/colors');
 const exec = require('util').promisify(require('child_process').exec);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -15,23 +17,47 @@ const servicesEnvsAndRepos = {
 
 function getDevPath(service) {
 	return servicesEnvsAndRepos[service] !== undefined ?
-	       `${servicesEnvsAndRepos[service][0]}=${'dev/' + servicesEnvsAndRepos[service][1]}\n` :
+	       `${servicesEnvsAndRepos[service][0]}=${join('dev', servicesEnvsAndRepos[service][1])}\n` :
 	       '';
+}
+
+async function setLocalServicesDevPath(localServices) {
+	let servicesPaths = '';
+	for (const service of localServices) {
+		const servicePath = getDevPath(service);
+		if (servicePath !== '') {
+			if (!fs.existsSync(servicePath.slice(0,-1).split('=')[1])) {
+				console.log(yellow(`${service} wasn't created as local service. Skipping it!`));
+				continue;
+			}
+			console.log(green(`Set ${service} to dev path!`));
+			servicesPaths += `${servicePath}\n`;
+		} else {
+			console.log(red(`${service} is not a valid option!`));
+			return [ false, '' ];
+		}
+	}
+
+	return [ true, servicesPaths ];
 }
 
 async function chooseLocal(mode, localServices) {
 	let servicesPaths = '';
-	if (mode === 'dev' && localServices) {
-		console.log(blue(`Chose to locally run ${localServices} services`));
-		for (const service of localServices.split(',')) {
-			const servicePath = getDevPath(service);
-			if (servicePath !== '') {
-				console.log(green(`Set ${service} to dev path!`));
-				servicesPaths += `${servicePath}\n`;
-			} else {
-				console.log(red(`${service} is not a valid option!`));
-				return false;
-			}
+	if (mode === 'dev') {
+		if (localServices === 'all') {
+			console.log(blue(`Chose to locally run all local services`));
+			localServices = Object.keys(servicesEnvsAndRepos);
+		}
+		else {
+			console.log(blue(`Chose to locally run ${localServices} services`));
+			localServices = localServices.split(',');
+		}
+
+		const [ retVal, servicesPaths ] = await setLocalServicesDevPath(localServices);
+		if (!retVal) {
+			console.log(red('Failed to set local services dev path!'));
+
+			return false;
 		}
 	}
 
