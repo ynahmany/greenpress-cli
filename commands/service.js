@@ -7,6 +7,7 @@ function setServiceCommand(program) {
 	program
 	.command('service [action] [services]')
 	.option('-b, --branch <name>', 'if action is create, will clone the required services in the requested branch')
+	.option('--scaled', 'if action is restart, will restart the relevant independent images')
 	.description(serviceDescription)
 	.action(serviceCommand);
 }

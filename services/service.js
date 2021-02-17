@@ -14,6 +14,26 @@ const repos = {
 	'drafts': 'https://github.com/greenpress/drafts-service'
 };
 
+const images = {
+	'auth': 'greenpress_greenpress_1',
+	'admin': 'greenpress_greenpress_1',
+	'secrets': 'greenpress_greenpress_1',
+	'assets': 'greenpress_greenpress_1',
+	'content': 'greenpress_greenpress_1',
+	'front': 'greenpress_greenpress_1',
+	'drafts': 'greenpress_greenpress_1'
+};
+
+const scaledImages = {
+	'auth': 'greenpress_greenpress_1',
+	'admin': 'greenpress_greenpress_1',
+	'secrets': 'greenpress_greenpress_1',
+	'assets': 'greenpress_greenpress_1',
+	'content': 'greenpress_greenpress_1',
+	'front': 'greenpress_greenpress_1',
+	'drafts': 'greenpress_greenpress_1'
+};
+
 function createDevDir() {
 	if (!existsSync(devDir)) {
 		mkdirSync(devDir);
@@ -49,8 +69,13 @@ function getServicesList() {
 	return Object.keys(repos).join(', ');
 }
 
+function getContainersByScale(scaled = false) {
+	return scaled ? scaledImages : images;
+}
+
 module.exports = {
 	createServices,
 	createDevDir,
-	getServicesList
+	getServicesList,
+	getContainersByScale
 }
