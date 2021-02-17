@@ -15,5 +15,6 @@ require('./commands/service')(program)
 require('./commands/theme')(program)
 require('./commands/deployment')(program)
 require('./commands/deploy')(program)
+require('./commands/logs')(program)
 
 program.parse(process.argv)
