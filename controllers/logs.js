@@ -4,7 +4,7 @@ const { red } = require('../utils/colors');
 
 async function logsController() {
 	if (!(await execute('npm run logs', 
-				  'run greenpress logs', 
+				  'show greenpress logs', 
 				  { cwd: join(process.cwd(), 'compose'), stdio:'inherit'}))) {
 		console.log(red('Failed to run greenpress logs!'));
 
