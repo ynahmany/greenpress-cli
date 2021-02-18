@@ -1,9 +1,12 @@
 const fs = require('fs');
+const cliProgress = require('cli-progress');
 const { join } = require('path');
 const { appendToDockerConfig } = require('../services/docker-service');
 const { green, blue, red, yellow } = require('../utils/colors');
 const exec = require('util').promisify(require('child_process').exec);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 const servicesEnvsAndRepos = {
 	'auth': ['AUTH_SERVICE_CWD', 'authentication-service'],
@@ -79,6 +82,7 @@ async function checkServerUp(idx) {
 	
 		const serverOutput = await checkServerLog(stdout);
 		if ('READY  Server listening' === serverOutput) {
+			updateProgressBar('100');
 			return true;
 		} 
 		
@@ -86,6 +90,8 @@ async function checkServerUp(idx) {
 			console.log(red('An error occurred, check server logs to see what happened'));
 			process.exit(1);
 		}
+
+		updateProgressBar(serverOutput);
 	} catch (e) {
 		await sleep(sleepTime);
 		return checkServerUp(idx + 1);
@@ -96,20 +102,67 @@ async function checkServerUp(idx) {
 }
 
 async function checkServerLog(stdout) {
-	if (stdout.toString().includes('READY  Server listening')) {
+	const output = stdout.toString();
+	if (output.includes('READY  Server listening')) {
 		return 'READY  Server listening';
 	}
 	
-	if (stdout.toString().includes('PM2 successfully stopped')) {
+	if (output.includes('PM2 successfully stopped')) {
 		return 'PM2 successfully stopped';
 	}
 
-	return '';
+	if (output.includes('Content Service is running on port')) {
+		return '90';
+	}
+
+	if (output.includes('Assets Service is running on port')) {
+		return '75';
+	}
+	
+	if (output.includes('Authentication Service is running on port')) {
+		return '60';
+	}
+	
+	if (output.includes('Secrets Service is running on port')) {
+		return '45';
+	}
+
+	if (output.includes('Drafts Service is running on port')) {
+		return '30';
+	}
+
+	if (output.includes('Admin front-server is up on port')) {
+		return '15';
+	}
+
+	return '0';
+}
+
+function initProgressBar() {
+	progressBar.start(100, 0);
+}
+
+function updateProgressBar(serverOutput) {
+	progressBar.getTotal()
+	progressBar.update(parseInt(serverOutput, 10));
+}
+
+function stopProgressBar() {
+	progressBar.stop();
+}
+
+async function handleStartupProgress() {
+	initProgressBar();
+
+	const serverStatus = await checkServerUp(0);
+	
+	stopProgressBar();
+
+	return serverStatus;
 }
 
 module.exports = {
 	chooseLocal,
 	getAppArgs,
-	checkServerUp,
-	checkServerLog
+	handleStartupProgress
 }

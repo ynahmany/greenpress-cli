@@ -1,4 +1,4 @@
-const { chooseLocal, getAppArgs, checkServerUp } = require('../services/start');
+const { chooseLocal, getAppArgs, handleStartupProgress } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../services/docker-service');
 const { execSync } = require('child_process');
@@ -31,10 +31,12 @@ async function startCommand (mode = 'user', options) {
 	};
 	
 	console.log(blue('Initializing Greenpress..'));
-	
-	execSync( ['npm', ...appArgs].join(' '), childArgs);
+	console.log(blue('Doing our magic, might take a few minutes. Please wait.'));
 
-	const serverStatus = await checkServerUp(0);
+	execSync( ['npm', ...appArgs].join(' '), childArgs);
+	
+	const serverStatus = await handleStartupProgress();
+
 	if (serverStatus) {
 		console.log(green('Server is running!'));
 		console.log(`\n\rTo stop it, use: ${blue('greenpress stop')}`);
