@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const { join } = require('path');
 
 
-async function startCommand (mode = 'user', options) {
+async function startCommand (mode = 'user', scale = 'local', options) {
 	if (!(await cleanDockerConfig())) {
 		console.log(red('Failed to clear env contents, exiting!'));
 		process.exit(1);
@@ -25,7 +25,7 @@ async function startCommand (mode = 'user', options) {
 		}
 	}
 
-	const appArgs = await getAppArgs(mode);
+	const appArgs = await getAppArgs(mode, scale);
 	const childArgs = { 
 		cwd: join(process.cwd(), 'compose')
 	};

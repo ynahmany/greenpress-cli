@@ -64,8 +64,8 @@ async function chooseLocal(mode, localServices) {
 	return appendToDockerConfig(servicesPaths);
 }
 
-async function getAppArgs(mode) {
-	return mode === 'user' ? [ 'run', 'local' ] : [ 'run', 'local:dev' ];
+async function getAppArgs(mode, scale) {
+	return mode === 'user' ? [ 'run', scale ] : [ 'run', 'local:dev'  ];
 }
 
 async function checkServerUp(idx) {
