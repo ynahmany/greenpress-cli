@@ -1,9 +1,10 @@
 const { chooseLocal, getAppArgs, handleStartupProgress } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../services/docker-service');
-const { execSync } = require('child_process');
+const { exec, spawn } = require('child_process');
 const { join } = require('path');
 
+const scale = 'local';
 
 async function startCommand (mode = 'user', options) {
 	if (!(await cleanDockerConfig())) {
@@ -33,19 +34,23 @@ async function startCommand (mode = 'user', options) {
 	console.log(blue('Initializing Greenpress..'));
 	console.log(blue('Doing our magic, might take a few minutes. Please wait.'));
 
-	execSync( ['npm', ...appArgs].join(' '), childArgs);
-	
-	const serverStatus = await handleStartupProgress();
+	const child = spawn('npm', appArgs, childArgs);
 
-	if (serverStatus) {
+	child.on('error', (err) => {
+		console.log(red(`\nAn error occured while starting greenpress! Error:\n`), err);
+		process.exit(1);
+	});
+
+	try {
+		await handleStartupProgress(scale, child);
 		console.log(green('Server is running!'));
 		console.log(`\n\rTo stop it, use: ${blue('greenpress stop')}`);
 		console.log(`\rTo populate it, use: ${blue('greenpress populate')}`);
 		process.exit(0);
-	} 
-
-	console.log('Server took to long to run');
-	process.exit(1);
+	} catch (err) {
+		console.log('An error occured during server startup');
+		process.exit(1);
+	}
 }
 
 module.exports = {
