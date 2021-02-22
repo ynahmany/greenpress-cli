@@ -120,11 +120,9 @@ async function checkServerStartUpProgress(scale, child) {
 	try {
 		initProgressBar(currentType);
 		await checkImagesUp(componentByScale.images, child);
-		// let errN = stopProgressBar(currentType) ? 0 : 1;
-		console.log(green('\nAll images are running!'));
+		console.log(green('\nAll images are running!\n'));
 		currentType = 'services';
 		await checkServerLog(componentByScale.services);
-		// errN += stopProgressBar(currentType) ? 0 : 1;
 		console.log(green('\nAll services are running!'));
 	} catch (err) {
 		console.log(red(err));
@@ -133,7 +131,13 @@ async function checkServerStartUpProgress(scale, child) {
 		throw err;
 	}
 	
-	return stopProgressBar(currentType);
+	return stopProgressBars();
+}
+
+function stopProgressBars() {
+	stopProgressBar('images');
+
+	return stopProgressBar('services');
 }
 
 function checkImagesUp(imagesDetails, child) {
@@ -219,7 +223,7 @@ function stopProgressBar(type) {
 	let progressFinalValue = 0;
 
 	if (type === 'images') {
-		imagesrogressBar.stop();
+		imagesProgressBar.stop();
 		progressFinalValue = imagesCurrentValue;
 		imagesCurrentValue = 0;
 

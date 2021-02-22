@@ -31,8 +31,8 @@ async function startCommand (mode = 'user', options) {
 		cwd: join(process.cwd(), 'compose')
 	};
 	
-	console.log(blue('Initializing Greenpress..'));
-	console.log(blue('Doing our magic, might take a few minutes. Please wait.'));
+	console.log(blue('Initializing Greenpress..\n'));
+	console.log(blue('Doing our magic, might take a few minutes. Please wait.\n'));
 
 	const child = spawn('npm', appArgs, childArgs);
 
@@ -46,6 +46,7 @@ async function startCommand (mode = 'user', options) {
 		console.log(green('Server is running!'));
 		console.log(`\n\rTo stop it, use: ${blue('greenpress stop')}`);
 		console.log(`\rTo populate it, use: ${blue('greenpress populate')}`);
+		console.log(`\rTo enter your app: http://localhost:3000`);
 		process.exit(0);
 	} catch (err) {
 		console.log('An error occured during server startup');
