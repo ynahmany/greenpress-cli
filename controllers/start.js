@@ -1,7 +1,7 @@
-const { chooseLocal, getAppArgs, handleStartupProgress } = require('../services/start');
+const { chooseLocal, getAppArgs, 
+	    initializeGreenpress, waitForServerStartup } = require('../services/start');
 const { green, blue, red } = require('../utils/colors');
 const { appendToDockerConfig, cleanDockerConfig } = require('../services/docker-service');
-const { exec, spawn } = require('child_process');
 const { join } = require('path');
 
 const scale = 'local';
@@ -12,46 +12,39 @@ async function startCommand (mode = 'user', options) {
 		process.exit(1);
 	}
 
+	console.log(green('Cleared previous env contents!'));
+
 	if (options.local) {
+		console.log(blue(`${options.local} passed as local services, checking their validity.`));
 		if (!(await chooseLocal(mode, options.local))) {
 			console.log(red('Chose invalid local options, exiting!'));
+			
 			process.exit(1);
 		}
+
+		console.log(green('Set local services successfully!'));
 	}
 
+
 	if (options.exclude) {
+		console.log(blue(`${options.exclude} were chosen to be excluded.`))
 		if (! (await appendToDockerConfig(`npm_config_x=${options.exclude}`))) {
 			console.log(red('Failed to set excluded services!'));
+			
 			process.exit(1);
 		}
+		
+		console.log(green('Excluded required services successfully!'));
 	}
+
 
 	const appArgs = await getAppArgs(mode);
 	const childArgs = { 
 		cwd: join(process.cwd(), 'compose')
 	};
 	
-	console.log(blue('Initializing Greenpress..\n'));
-	console.log(blue('Doing our magic, might take a few minutes. Please wait.\n'));
-
-	const child = spawn('npm', appArgs, childArgs);
-
-	child.on('error', (err) => {
-		console.log(red(`\nAn error occured while starting greenpress! Error:\n`), err);
-		process.exit(1);
-	});
-
-	try {
-		await handleStartupProgress(scale, child);
-		console.log(green('Server is running!'));
-		console.log(`\n\rTo stop it, use: ${blue('greenpress stop')}`);
-		console.log(`\rTo populate it, use: ${blue('greenpress populate')}`);
-		console.log(`\rTo enter your app: http://localhost:3000`);
-		process.exit(0);
-	} catch (err) {
-		console.log('An error occured during server startup');
-		process.exit(1);
-	}
+	const child = initializeGreenpress(appArgs, childArgs);
+	await waitForServerStartup(scale, child);
 }
 
 module.exports = {
