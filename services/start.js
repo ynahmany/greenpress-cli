@@ -68,7 +68,7 @@ async function handleStartupProgress(compositionType, child) {
 		store.init(compositionType);
 		store.startImages();
 		await checkImagesUp(child);
-		console.log(green('\nAll images are running!\n'));
+		console.log(green('\nAll images are running!'));
 
 		store.startServices()
 		await checkServerLog();
@@ -86,6 +86,7 @@ function initializeGreenpress(mode) {
 	const childArgs = {
 		cwd: join(process.cwd(), 'compose')
 	};
+	
 	console.log(blue('Initializing Greenpress..\n'));
 	console.log(blue('Doing our magic, might take a few minutes. Please wait.\n'));
 
@@ -102,7 +103,7 @@ function initializeGreenpress(mode) {
 async function waitForServerStartup(compositionType, child) {
 	try {
 		await handleStartupProgress(compositionType, child);
-		console.log(green('\nServer is running!'));
+		console.log(green('Server is running!'));
 		console.log(`\n\rTo stop it, use: ${blue('greenpress stop')}`);
 		console.log(`\rTo populate it, use: ${blue('greenpress populate')}`);
 		console.log(`\rTo enter your app: http://localhost:3000`);

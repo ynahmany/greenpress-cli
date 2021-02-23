@@ -1,6 +1,5 @@
 const { getProgressBarStore } = require('./progress-bar');
 
-
 class StartStore {
 	state = {
 		compositionType: 'local',
@@ -74,17 +73,19 @@ class StartStore {
 	sendOutput(output) {
 		const { components, componentsDetails, incrementedComponents } = this.state;
 		components.forEach((component) => {
-			const [ searchText, progress ] = componentsDetails[component];
-			if (searchText && !incrementedComponents[component] && output.includes(searchText)) {
-				this._progressBarStore.increment(progress || 0);
-				incrementedComponents[component] = true;
+			Object.entries(componentsDetails[component]).forEach((element) => {
+				const [ searchText, progress ] = element[1];
+				if (searchText && !incrementedComponents[element[0]] && output.includes(searchText)) {
+					this._progressBarStore.increment(progress || 0);
+					incrementedComponents[element[0]] = true;
 			}
 		});
+	});
 	}
 
-	setStep(stepName) {
+	setStep(componentType, stepName) {
 		const { componentsDetails, incrementedComponents } = this.state;
-		const [ _, progress ] = componentsDetails[stepName];
+		const [ _, progress ] = componentsDetails[componentType][stepName];
 
 		if (!incrementedComponents[stepName]) {
 			this._progressBarStore.increment(progress || 0);

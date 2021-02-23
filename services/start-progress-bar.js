@@ -15,7 +15,7 @@ function checkImagesUp(child) {
 		});
 
 		child.on('exit', () => {
-			store.setStep('greenpress');
+			store.setStep('images', 'greenpress');
 			if (store.isProgressTypeResolved()) {
 				resolve();
 			}

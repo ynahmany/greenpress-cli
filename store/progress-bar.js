@@ -16,7 +16,7 @@ class ProgressBarStore {
 	}
 
 	increment(progress = 0) {
-		this.state.progres += progress;
+		this.state.progress += progress;
 		this._progressBar.increment(progress);
 	}
 
@@ -43,3 +43,4 @@ module.exports = {
 		return store;
 	}
 }
+

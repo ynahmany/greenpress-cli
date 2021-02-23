@@ -8,6 +8,7 @@ function useLocalServices(localServices, mode) {
 	if (!localServices) {
 		return;
 	}
+
 	console.log(blue(`${localServices} passed as local services, checking their validity.`));
 	chooseLocal(mode, localServices);
 	console.log(green('Set local services successfully!'));
@@ -17,7 +18,9 @@ function excludeServices(servicesToExclude) {
 	if (!servicesToExclude) {
 		return;
 	}
-	console.log(blue(`${servicesToExclude} were chosen to be excluded.`))
+
+	console.log(blue(`${servicesToExclude} were chosen to be excluded.`));
+	
 	try {
 		appendToDockerConfig(`npm_config_x=${servicesToExclude}`);
 	} catch (e) {
