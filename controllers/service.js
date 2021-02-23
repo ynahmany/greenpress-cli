@@ -29,10 +29,12 @@ async function restartController(services, scaled = false) {
 	// get containers names according to scale
 	let containersImagesByName = getContainersByScale(scaled);
 	let errN = 0;
+
 	for (const service of services) {
-		if (!(await execute(`docker exec ${containersImagesByName[service]} pm2 restart ${service}`,
-			`restart ${service}`,
-			{ stdio:'inherit'}))) {
+		const [ command, pm2Suffix ] = [ scaled ? 'restart' : 'exec',
+		                                 !scaled ? `pm2 restart ${service}` : '' ];
+		const restartCommand = `docker ${command} ${containersImagesByName[service]} ${pm2Suffix}`;
+		if (!(await execute(restartCommand, `restart ${service}`, { stdio:'inherit'}))) {
 			console.log(red(`Failed to restart ${service}`));
 			errN += 1;
 			continue;
