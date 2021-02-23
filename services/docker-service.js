@@ -4,36 +4,26 @@ const { red } = require('../utils/colors');
 
 const composeConfigFile = join(process.cwd(), 'compose', 'greenpress.local.env');
 
-async function appendToDockerConfig(data) {
+function appendToDockerConfig(data) {
 	try {
 		if (!fs.existsSync(composeConfigFile)) {
-			fs.writeFile(composeConfigFile, '', { flag: 'w' }, function (e) {
-				if (e) {
-					return false;
-				}
-			});
+			fs.writeFileSync(composeConfigFile, '', { flag: 'w' });
 		}
 
 		fs.appendFileSync(composeConfigFile, `${data}\n`);
 	} catch (e) {
-		console.log(red(`Failed to append data to greenpress.local.env. Error: ${e.message}`));
-		return false;
+		return new Error(red(`Failed to append data to greenpress.local.env. Error: ${e.message}`));
 	}
-
-	return true;
 }
 
-async function cleanDockerConfig() {
+function cleanDockerConfig() {
 	try {
 		if (fs.existsSync(composeConfigFile)) {
 			fs.truncateSync(composeConfigFile, 0);
 		}
 	} catch (e) {
-		console.log(red(`Failed to clean greenpress.local.env. Error: ${e.message}`));
-		return false;
+		throw new Error(red(`Failed to clean greenpress.local.env. Error: ${e.message}`))
 	}
-
-	return true;
 }
 
 module.exports = {
