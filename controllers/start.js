@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const { join } = require('path');
 
 
-async function startCommand (mode = 'user', scale = 'local', options) {
+async function startCommand (mode = 'prod', scale = 'local', options) {
 	if (!(await cleanDockerConfig())) {
 		console.log(red('Failed to clear env contents, exiting!'));
 		process.exit(1);
@@ -31,7 +31,6 @@ async function startCommand (mode = 'user', scale = 'local', options) {
 	};
 	
 	console.log(blue('Initializing Greenpress..'));
-	
 	execSync( ['npm', ...appArgs].join(' '), childArgs);
 
 	const serverStatus = await checkServerUp(0);

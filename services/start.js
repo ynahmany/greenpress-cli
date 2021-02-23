@@ -65,7 +65,7 @@ async function chooseLocal(mode, localServices) {
 }
 
 async function getAppArgs(mode, scale) {
-	return mode === 'user' ? [ 'run', scale ] : [ 'run', 'local:dev'  ];
+	return mode === 'prod' ? [ 'run', scale ] : [ 'run', 'local:dev'  ];
 }
 
 async function checkServerUp(idx) {
