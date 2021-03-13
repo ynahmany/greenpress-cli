@@ -54,7 +54,7 @@ function chooseLocal(mode, localServices) {
 		}
 	}
 
-	setLocalServicesDevPath(localServices);
+	servicesPaths = setLocalServicesDevPath(localServices);
 	appendToDockerConfig(servicesPaths);
 }
 
