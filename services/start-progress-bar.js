@@ -5,16 +5,16 @@ const { spawn } = require('child_process');
 function checkImagesUp(child) {
 	return new Promise((resolve, reject) => {
 		const store = getStartStore();
-		child.on('error', (err) => {
+		child.onError((err) => {
 			console.log(red(`An error occurred while checking images startup. Error: ${err}`));
 			reject('Failed to run all images!');
 		});
 
-		child.stdout.on('data', (data) => {
+		child.onData((data) => {
 			store.sendOutput(data.toString())
 		});
 
-		child.on('exit', () => {
+		child.onExit(() => {
 			store.setStep('images', 'greenpress');
 			if (store.isProgressTypeResolved()) {
 				resolve();

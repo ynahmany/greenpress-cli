@@ -40,6 +40,7 @@ class StartStore {
 					step6: [ "Step 6/8", 2.5 ],
 					step7: [ "Step 7/8", 2.5 ],
 					greenpress: [ null, 2.5 ],
+					alreadyBuilt: ['Successfully built', 17.5]
 				},
 				services: {
 					admin: [ "Admin front-server is up on port", 10 ],
