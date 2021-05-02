@@ -1,7 +1,7 @@
 const { red } = require('../utils/colors');
 const { execSync } = require('child_process');
 
-module.exports = async function execute(cmd, actionDescription, execProps = null) {
+module.exports = async function execute(cmd, actionDescription, execProps = {stdio: 'pipe'}) {
 	try {
 		execSync(cmd, execProps, (error, stdout, stderr) => {
 			if (error) {

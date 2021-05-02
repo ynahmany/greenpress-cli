@@ -10,8 +10,17 @@ function checkImagesUp(child) {
 			reject('Failed to run all images!');
 		});
 
+		let stepOutputEncountered = false;
 		child.onData((data) => {
-			store.sendOutput(data.toString())
+			const dataString = data.toString();
+			if (dataString.includes('Step')) {
+				stepOutputEncountered = true;
+			}
+
+			if (!stepOutputEncountered || 
+				(stepOutputEncountered &&  !dataString.includes('Successfully built'))) {
+				store.sendOutput(data.toString());
+			}
 		});
 
 		child.onExit(() => {

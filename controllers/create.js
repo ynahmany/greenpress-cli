@@ -16,6 +16,7 @@ async function askAlternativeFront(defaultValue) {
 module.exports = async function createController(name = 'greenpress', type = 'default', altFront = null, mode = 'user') {
 	if (!(await clone(name, type))) {
 		console.log(red(`Failed to clone application!`));
+		console.log(blue('Make sure that all of Greenpress dependencies are installed - use greenpress missing'));
 		process.exit(1);
 	}
 
