@@ -1,7 +1,7 @@
 import { getProgressBarStore, ProgressBarStore } from "./progress-bar";
 
 export interface StateType {
-  compositionType: string;
+  compositionType: CompositionType;
   progressType: string;
   incrementedComponents: IncrementedComponents;
   componentsDetails?: ComponentsDetails;
@@ -48,6 +48,7 @@ export interface Services {
   secrets?: (string | number)[] | null;
   front?: (string | number)[] | null;
 }
+export type CompositionType = 'local'
 
 class StartStore {
   state: StateType = {
@@ -77,7 +78,7 @@ class StartStore {
     this._progressBarStore = getProgressBarStore();
   }
 
-  init(compositionType = "local") {
+  init(compositionType: CompositionType = "local") {
     this.state.compositionType = compositionType;
     if (compositionType === "local") {
       this.state.componentsDetails = {

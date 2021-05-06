@@ -1,8 +1,8 @@
-const { getStartStore } = require('../store/start');
-const { red } = require('../utils/colors');
-const { spawn } = require('child_process');
+import { getStartStore } from '../store/start';
+import { red } from '../utils/colors';
+import { spawn, ChildProcess } from 'child_process';
 
-function checkImagesUp(child) {
+export const checkImagesUp = (child: ChildProcess) => {
 	return new Promise((resolve, reject) => {
 		const store = getStartStore();
 		child.onError((err) => {
@@ -17,13 +17,13 @@ function checkImagesUp(child) {
 		child.onExit(() => {
 			store.setStep('images', 'greenpress');
 			if (store.isProgressTypeResolved()) {
-				resolve();
+				resolve(true);
 			}
 		});
 	});
 }
 
-function checkServerLog() {
+export const checkServerLog = () => {
 	return new Promise((resolve, reject) => {
 		const logs = spawn('docker', [ 'logs', 'greenpress_greenpress_1', '--follow' ]);
 		const store = getStartStore();
@@ -45,13 +45,8 @@ function checkServerLog() {
 			}
 
 			if (store.isProgressTypeResolved()) {
-				resolve();
+				resolve(true);
 			}
 		});
 	});
-}
-
-module.exports = {
-	checkImagesUp,
-	checkServerLog
 }

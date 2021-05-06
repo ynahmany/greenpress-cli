@@ -1,10 +1,10 @@
-const {chooseLocal, initializeGreenpress, waitForServerStartup} = require('../services/start');
-const {green, blue, red} = require('../utils/colors');
-const {appendToDockerConfig, cleanDockerConfig} = require('../services/docker-service');
+import {chooseLocal, initializeGreenpress, waitForServerStartup} from '../services/start';
+import {green, blue, red} from '../utils/colors';
+import {appendToDockerConfig, cleanDockerConfig} from '../services/docker-service';
 
 const compositionType = 'local';
 
-function useLocalServices(localServices, mode) {
+const useLocalServices = (localServices, mode) => {
     if (!localServices) {
         return;
     }
@@ -14,7 +14,7 @@ function useLocalServices(localServices, mode) {
     console.log(green('Set local services successfully!'));
 }
 
-function excludeServices(servicesToExclude) {
+const excludeServices = (servicesToExclude: string[]) => {
     if (!servicesToExclude) {
         return;
     }
@@ -31,7 +31,7 @@ function excludeServices(servicesToExclude) {
     console.log(green('Excluded required services successfully!'));
 }
 
-async function startCommand(mode = 'user', options) {
+export const startCommand = async(mode = 'user', options) => {
     try {
         cleanDockerConfig();
         console.log(green('Cleared previous env contents!'));
@@ -45,7 +45,3 @@ async function startCommand(mode = 'user', options) {
     const child = initializeGreenpress(mode);
     await waitForServerStartup(compositionType, child);
 }
-
-module.exports = {
-    startCommand
-};
