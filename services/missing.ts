@@ -1,9 +1,9 @@
-const { execSync } = require('child_process');
-const { green, red } = require('../utils/colors');
+import { execSync } from 'child_process';
+import { green, red } from '../utils/colors';
 
-function checkDependencyVersion(app, installLink) {
+export const checkDependencyVersion = (app: string, installLink: string) => {
 	try {
-		const versionCommand = app + " --version";
+		const versionCommand = `${app} --version`;
 		const version = execSync(versionCommand).toString();
 		if (version.includes('not')) {
 			console.log(`${red(`${app} is not installed!`)} To download:\n${installLink}`);
@@ -14,5 +14,3 @@ function checkDependencyVersion(app, installLink) {
 		console.log(`An exception was thrown: ${err.stdout}`);
 	}
 }
-
-module.exports = { checkDependencyVersion };
