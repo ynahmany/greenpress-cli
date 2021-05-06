@@ -1,9 +1,9 @@
-const fs = require('fs');
-const execute = require('../utils/execute');
-const { join } = require('path');
-const { red, green } = require('../utils/colors');
+import fs from 'fs';
+import { execute } from '../utils/execute';
+import { join } from 'path';
+import { red, green } from '../utils/colors';
 
-function createThemeFolder(name) {
+export const createThemeFolder = (name: string) => {
 	const themesFolderPath = join(process.cwd(), 'themes');
 	const customThemePath = join(themesFolderPath, name);
 
@@ -18,7 +18,7 @@ function createThemeFolder(name) {
 	return { customThemePath, themesFolderPath };
 }
 
-async function cloneFromGit(name, gitRepository) {
+export const cloneFromGit = async(name: string, gitRepository: string) => {
 	const { customThemePath, themesFolderPath } = createThemeFolder(name);
 
 	try {
@@ -35,7 +35,7 @@ async function cloneFromGit(name, gitRepository) {
 	return true;
 }
 
-async function copyBaseTheme(name, fromTheme) {
+export const copyBaseTheme = async (name: string, fromTheme: string) => {
 	const { customThemePath } = createThemeFolder(name);
 
 	try {
@@ -54,7 +54,7 @@ async function copyBaseTheme(name, fromTheme) {
 	return true;
 }
 
-async function createConfigFile(name) {
+export const createConfigFile = async(name: string) => {
 	const configContent = `//This file was generated using Greenpress CLI. For more information about the config file, go to https://docs.greenpress.info/guide/greenpress-configuration.html.
 const { join } = require('path');
 
@@ -75,10 +75,4 @@ module.exports = {
 	}
 
 	return true;
-}
-
-module.exports = {
-	cloneFromGit,
-	copyBaseTheme,
-	createConfigFile
 }

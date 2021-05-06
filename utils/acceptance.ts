@@ -1,11 +1,11 @@
 import readline from 'readline';
 
-export const yesNoQuestion = (question: string) => {
+export const yesNoQuestion = (question: string): Promise<boolean> => {
 	const questionInterface = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout
 	});
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		questionInterface.question(question + " [y/N] ",
 			(input = 'n') => {
 				input = input.toLowerCase();

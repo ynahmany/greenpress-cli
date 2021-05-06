@@ -4,7 +4,7 @@ import { red } from './colors';
 
 const exec = promisify(callbackExec);
 
-export const execute = async (cmd, actionDescription, execProps = null) => {
+export const execute = async (cmd: string, actionDescription?: string, execProps = null) => {
   try {
     const { stdout, stderr }  = await exec(cmd, execProps);
       if (stderr) {
