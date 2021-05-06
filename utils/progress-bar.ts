@@ -1,6 +1,6 @@
-const cliProgress = require('cli-progress');
+import cliProgress from 'cli-progress';
 
-class ProgressBar {
+export class ProgressBar {
 	_progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 	constructor(total = 100, start = 0) {
@@ -11,7 +11,7 @@ class ProgressBar {
 		this._progressBar.stop();
 	}
 
-	update(progress) {
+	update(progress: number) {
 		this._progressBar.update(progress);
 	}
 
@@ -19,5 +19,3 @@ class ProgressBar {
 		this._progressBar.increment(progress);
 	}
 }
-
-module.exports = ProgressBar;

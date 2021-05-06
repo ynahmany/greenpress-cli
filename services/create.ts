@@ -1,9 +1,9 @@
-const fs = require('fs');
-const execute = require('../utils/execute');
-const { blue } = require('../utils/colors');
-const { join } = require('path');
+import fs from 'fs';
+import { join } from 'path';
+import { execute } from '../utils/execute';
+import { blue, red } from '../utils/colors';
 
-async function clone(name, type = 'default') {
+export const clone = async(name: string, type = 'default') => {
 	const repoPath = type === 'pm2' ?
 		'https://github.com/greenpress/greenpress-pm2' :
 		'https://github.com/greenpress/greenpress';
@@ -11,18 +11,16 @@ async function clone(name, type = 'default') {
 	return await execute(`git clone ${repoPath} ${name}`, 'clone greenpress')
 }
 
-function setServiceVersion(packagePath, service, version) {
+export const setServiceVersion = (packagePath: string, service: string, version: string) => {
 	console.log(blue(`setting ${service} to ${version}`));
 	const projectPackage = require(packagePath);
 	projectPackage.dependencies[`@greenpress/${service}`] = version;
 	fs.writeFileSync(packagePath, JSON.stringify(projectPackage, null, 2))
 }
 
-function renameOrigin(name) {
-	execute(`git remote rename origin gp`, 'rename greenpress origin to gp', { cwd: join(process.cwd(), name) });
-}
+export const renameOrigin = (name: string) => execute(`git remote rename origin gp`, 'rename greenpress origin to gp', { cwd: join(process.cwd(), name) });
 
-async function SetupEnvForWindows(name) {
+export const SetupEnvForWindows = async (name: string) => {
 	try {
 		const composePath = join(process.cwd(), name, 'compose');
 		if (!(await execute('npm run envs', 
@@ -52,11 +50,4 @@ async function SetupEnvForWindows(name) {
 	}
 	
 	return true;
-}
-
-module.exports = {
-	clone,
-	setServiceVersion,
-	renameOrigin,
-	SetupEnvForWindows
 }

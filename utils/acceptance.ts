@@ -1,6 +1,6 @@
-const readline = require('readline');
+import readline from 'readline';
 
-module.exports = function yesNoQuestion(question) {
+export const yesNoQuestion = (question: string) => {
 	const questionInterface = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout

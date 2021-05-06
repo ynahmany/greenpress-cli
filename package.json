@@ -30,8 +30,14 @@
     "test"
   ],
   "scripts": {
-    "test": "echo 1"
+    "test": "echo 1",
+    "build": "tsc -p ."
   },
   "homepage": "https://github.com/greenpress/greenpress-cli#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/cli-progress": "^3.9.1",
+    "@types/node": "^15.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
 }
