@@ -1,7 +1,7 @@
-const execute  = require('../utils/execute');
-const { blue, red, green } = require('../utils/colors');
-const { existsSync, mkdirSync } = require('fs');
-const { join } = require('path');
+import { execute } from '../utils/execute';
+import { blue, red, green } from '../utils/colors';
+import { existsSync, mkdirSync } from 'fs';
+import { join } from 'path';
 
 const devDir = join(process.cwd(), 'dev');
 const repos = {
@@ -34,13 +34,13 @@ const scaledImages = {
 	'secrets': 'greenpress_secrets_1'
 };
 
-function createDevDir() {
+export const createDevDir = () => {
 	if (!existsSync(devDir)) {
 		mkdirSync(devDir);
 	}
 }
 
-async function createServices(services, branchName = undefined) {
+export const createServices = async (services, branchName = undefined) => {
 	let errN = 0;
 	for (let service of services) {
 		let cloneCommand = `git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]}`;
@@ -65,17 +65,6 @@ async function createServices(services, branchName = undefined) {
 	return errN;
 }
 
-function getServicesList() {
-	return Object.keys(repos).join(', ');
-}
+export const getServicesList = () => Object.keys(repos).join(', ');
 
-function getContainersByScale(scaled = false) {
-	return scaled ? scaledImages : images;
-}
-
-module.exports = {
-	createServices,
-	createDevDir,
-	getServicesList,
-	getContainersByScale
-}
+export const getContainersByScale = (scaled = false) => scaled ? scaledImages : images;
