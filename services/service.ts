@@ -40,7 +40,7 @@ export const createDevDir = () => {
 	}
 }
 
-export const createServices = async (services, branchName = undefined) => {
+export const createServices = async (services: string[], branchName: string = undefined) => {
 	let errN = 0;
 	for (let service of services) {
 		let cloneCommand = `git clone ${branchName !== undefined ? `-b ${branchName}` : ''} ${repos[service]}`;

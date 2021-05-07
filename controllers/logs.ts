@@ -1,8 +1,8 @@
-const execute = require('../utils/execute');
-const { join } = require('path');
-const { red } = require('../utils/colors');
+import { execute } from '../utils/execute';
+import { join } from 'path';
+import { red } from '../utils/colors';
 
-async function logsController() {
+export const logsController = async() => {
 	if (!(await execute('npm run logs', 
 				  'show greenpress logs', 
 				  { cwd: join(process.cwd(), 'compose'), stdio:'inherit'}))) {
@@ -11,5 +11,3 @@ async function logsController() {
 		process.exit(1);
 	}
 }
-
-module.exports = logsController;

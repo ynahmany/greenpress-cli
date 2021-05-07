@@ -1,6 +1,6 @@
 import readline from 'readline';
 
-export const yesNoQuestion = (question: string): Promise<boolean> => {
+export const accept = (question: string): Promise<boolean> => {
 	const questionInterface = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout
