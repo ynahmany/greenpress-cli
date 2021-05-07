@@ -1,15 +1,15 @@
-const { serviceCommand } = require('../controllers/service');
-const servicesList = require('../services/service').getServicesList();
+import { CommanderStatic } from 'commander';
+import { serviceCommand } from '../controllers/service';
+import { getServicesList } from '../services/service';
+
+const servicesList = getServicesList();
 const serviceDescription = `Handles operations related to individual services. 
 Possible services values: ${servicesList}`;
 
-function setServiceCommand(program) {
+export const setServiceCommand = (program: CommanderStatic) =>
 	program
 	.command('service [action] [services]')
 	.option('-b, --branch <name>', 'if action is create, will clone the required services in the requested branch')
 	.option('--scaled', 'if action is restart, will restart the relevant independent images')
 	.description(serviceDescription)
 	.action(serviceCommand);
-}
-
-module.exports = setServiceCommand;

@@ -1,6 +1,7 @@
+import { CommanderStatic } from 'commander';
 import { startCommand } from '../controllers/start';
 
-export const setStartCommand = (program) =>
+export const setStartCommand = (program: CommanderStatic) =>
 	program
 		.command('start [mode]')
 		.option('-l, --local <services>', 'running selected services in dev mode')
