@@ -1,8 +1,9 @@
-const execute = require('../../utils/execute');
-const { getRandomHash } = require('../../services/hashing');
-const { createAddOn, addVariable } = require('../../services/heroku');
-const { green, red, blue } = require('../../utils/colors');
-const askQuestion = require('../../utils/question');
+import { execute } from '../../utils/execute';
+import { getRandomHash } from '../../services/hashing';
+import { createAddOn, addVariable } from '../../services/heroku';
+import { green, red, blue } from '../../utils/colors';
+import { askQuestion } from '../../utils/question';
+import { DeploymentRequest } from './types';
 const addOns = {
 	redis: 'heroku-redis',
 	papertrail: 'papertrail'
@@ -15,7 +16,7 @@ const secrets = [
 	"INTERNAL_SECRET"
 ]
 
-async function deployHeroku({ mongo }) {
+export const deployHeroku = async({ mongo }: DeploymentRequest) => {
 	if (!await execute('heroku login', 'login to heroku')) {
 		console.log(red(`login failed`));
 		console.log('Make sure you have installed the Heroku CLI an logged in to your account.');
@@ -52,9 +53,3 @@ async function deployHeroku({ mongo }) {
 		}
 	}))
 }
-
-module.exports = {
-	deployHeroku
-}
-
-
