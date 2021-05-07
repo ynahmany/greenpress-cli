@@ -1,8 +1,8 @@
-const { green, blue, red } = require('../utils/colors');
-const execute = require('../utils/execute');
-const { join } = require('path');
+import { green, blue, red } from '../utils/colors';
+import { execute } from '../utils/execute';
+import { join } from 'path';
 
-function stopCommand() {
+export const stopCommand = () => {
 
 	console.log(blue('Stopping greenpress...'));
 	let errN = execute('npm run stop', 'stop greenpress container', { cwd: join(process.cwd(), 'compose')}) ? 0 : 1;
@@ -14,8 +14,4 @@ function stopCommand() {
 
 	console.log(green("Greenpress stopped"));
 	process.exit(0);
-}
-
-module.exports = {
-	stopCommand
 }

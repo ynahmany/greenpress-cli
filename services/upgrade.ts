@@ -1,6 +1,7 @@
 import fs from "fs";
 import https from "https";
 import { join } from "path";
+import { PackageJsonType } from "../types";
 import { yesNoQuestion } from "../utils/acceptance";
 import { green, yellow } from "../utils/colors";
 import { execute } from "../utils/execute";
@@ -46,10 +47,10 @@ export const getJSON = async (url: string) => {
 
 export const getLocalPackage = () => require(localPackagePath);
 
-export const getRemotePackage = async () =>
+export const getRemotePackage = async (): Promise<PackageJsonType> =>
   await getJSON(
     "https://raw.githubusercontent.com/greenpress/greenpress/master/package.json"
-  );
+  ) as PackageJsonType;
 
 export const saveUpdatedPackage = async(localPackage: string) => {
   try {

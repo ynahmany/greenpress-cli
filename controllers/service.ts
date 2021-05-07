@@ -1,8 +1,12 @@
-const { createServices, createDevDir, getContainersByScale } = require('../services/service');
-const { red, green } = require('../utils/colors');
-const execute = require('../utils/execute');
+import { createServices, createDevDir, getContainersByScale } from '../services/service';
+import { red, green } from '../utils/colors';
+import { execute } from '../utils/execute';
 
-async function serviceCommand(action, services, options) {
+enum ServiceCommandActions {
+	create = 'create',
+	restart = 'restart'
+}
+export const serviceCommand = (action: ServiceCommandActions, services: string, options) => {
 	if (action === 'create') {
 		createController(services.split(','), options.branch);
 	} else if (action === 'restart') {
@@ -10,7 +14,7 @@ async function serviceCommand(action, services, options) {
 	}
 }
 
-async function createController(services, branch = undefined) {
+export const createController = async(services: string[], branch = undefined) => {
 	// create dev folder if not existing
 	createDevDir();
 
@@ -25,7 +29,7 @@ async function createController(services, branch = undefined) {
 	process.exit(0);
 }
 
-async function restartController(services, scaled = false) {
+export const restartController = async (services: string[], scaled = false) => {
 	// get containers names according to scale
 	let containersImagesByName = getContainersByScale(scaled);
 	let errN = 0;
@@ -50,8 +54,4 @@ async function restartController(services, scaled = false) {
 
 	console.log(green('Restarted all the requested services'));
 	process.exit(0);
-}
-
-module.exports = {
-	serviceCommand
 }

@@ -43,5 +43,6 @@ export const startCommand = async(mode = 'user', options) => {
     }
 
     const child = initializeGreenpress(mode);
-    await waitForServerStartup(compositionType, child);
+    // TODO: yohay - make sure it is working 
+    await waitForServerStartup(compositionType, child.process);
 }

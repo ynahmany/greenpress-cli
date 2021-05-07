@@ -126,9 +126,9 @@ export const getProcessHandler = (proc: ChildProcess) => {
   });
 
   return {
-    onExit: (func) => (onExit = func),
-    onData: (func) => (onData = func),
-    onError: (func) => (onError = func),
+    onExit: (func: () => void) => (onExit = func),
+    onData: (func: (t?: any) => void) => (onData = func),
+    onError: (func: (t?: any) => void) => (onError = func),
     process: proc,
   };
 }
