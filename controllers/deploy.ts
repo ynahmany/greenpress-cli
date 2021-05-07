@@ -1,7 +1,8 @@
-const execute = require('../utils/execute');
-const { green, red } = require('../utils/colors');
+import { execute } from '../utils/execute';
+import { green, red } from '../utils/colors';
+import { DeploymentTypes } from './deployment/types';
 
-async function deployCommand(type, { app }) {
+export const deployCommand = async(type: DeploymentTypes, { app }: { app: string }) => {
 	switch (type) {
 		case 'heroku':
 			console.log(green('deploying to heroku...'));
@@ -13,7 +14,7 @@ async function deployCommand(type, { app }) {
 	}
 }
 
-async function deployHeroku(appName = process.env.HEROKU_APP) {
+export const deployHeroku = async(appName = process.env.HEROKU_APP) => {
 	if (!await execute(`heroku git:remote -a ${appName}`, 'create heroku app')) {
 		console.log(red(`create app ${appName} remote repository failed`));
 		process.exit(1);
@@ -21,9 +22,3 @@ async function deployHeroku(appName = process.env.HEROKU_APP) {
 
 	await execute(`git push heroku master -f`, 'deploy to heroku', { stdio: 'inherit' });
 }
-
-module.exports = {
-	deployCommand
-}
-
-
