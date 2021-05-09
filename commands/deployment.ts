@@ -1,8 +1,8 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import { deploymentTypes } from '../controllers/deployment/types';
 import { deploymentCommand } from '../controllers/deployment';
 
-export const setDeploymentCommand = (program: CommanderStatic) =>
+export const setDeploymentCommand = (program: Command) =>
 	program
 		.command('deployment [type]')
 		.option('-mg, --mongo <mongo>', 'MongoDB URI')

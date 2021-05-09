@@ -1,6 +1,6 @@
 import fs = require("fs");
 import { join } from "path";
-import { ChildProcess, ChildProcessByStdio, spawn } from "child_process";
+import { ChildProcess, ChildProcessByStdio, ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { CompositionType, getStartStore } from "../store/start";
 import { appendToDockerConfig } from "./docker-service";
 import { green, blue, red, yellow } from "../utils/colors";
@@ -49,23 +49,24 @@ export const setLocalServicesDevPath = (localServices: string[]) => {
 
 export const chooseLocal = (mode: Env, localServices: string) => {
   let servicesPaths = "";
+  let localServicesDev = null;
   if (mode === 'dev') {
     if (localServices === "all") {
       console.log(blue(`Chose to locally run all local services`));
-      localServices = Object.keys(servicesEnvsAndRepos);
+      localServicesDev = Object.keys(servicesEnvsAndRepos);
     } else {
       console.log(blue(`Chose to locally run ${localServices} services`));
-      localServices = localServices.split(",");
+      localServicesDev = localServices.split(",");
     }
   }
 
-  servicesPaths = setLocalServicesDevPath(localServices);
+  servicesPaths = setLocalServicesDevPath(localServicesDev);
   appendToDockerConfig(servicesPaths);
 }
 // TODO: add proper Mode type
 export const getAppArgs = (mode: string) => mode === "user" ? ["run", "local"] : ["run", "local:dev"];
 
-export const handleStartupProgress = async(compositionType: CompositionType, child: ChildProcess) => {
+export const handleStartupProgress = async(compositionType: CompositionType, child: ChildProcessWithoutNullStreams) => {
   const store = getStartStore();
   try {
     store.init(compositionType);
@@ -108,7 +109,7 @@ export const initializeGreenpress = (mode: string) => {
   return getProcessHandler(child);
 }
 
-export const getProcessHandler = (proc: ChildProcess) => {
+export const getProcessHandler = (proc: ChildProcessWithoutNullStreams) => {
   let onExit: () => void;
   let onData: (data: any) => void;
   let onError: (err: any) => void;
@@ -133,7 +134,7 @@ export const getProcessHandler = (proc: ChildProcess) => {
   };
 }
 
-export const waitForServerStartup = async (compositionType: CompositionType, child: ChildProcess) => {
+export const waitForServerStartup = async (compositionType: CompositionType, child: ChildProcessWithoutNullStreams) => {
   try {
     await handleStartupProgress(compositionType, child);
     console.log(green("Server is running!"));

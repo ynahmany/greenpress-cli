@@ -2,7 +2,7 @@ import fs from "fs";
 import https from "https";
 import { join } from "path";
 import { PackageJsonType } from "../types";
-import { yesNoQuestion } from "../utils/acceptance";
+import { accept } from "../utils/acceptance";
 import { green, yellow } from "../utils/colors";
 import { execute } from "../utils/execute";
 
@@ -13,7 +13,7 @@ export const checkAndUpgradeDependency = async (
   currentValue: string,
   remoteValue: string
 ) => {
-  const answer = await yesNoQuestion(
+  const answer = await accept(
     `Would you like to upgrade to remote's version?`
   );
   return upgradeFunc(answer, name, remoteValue, currentValue);

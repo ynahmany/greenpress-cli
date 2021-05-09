@@ -1,5 +1,5 @@
 import { askQuestion } from '../utils/question';
-import { yesNoQuestion } from '../utils/acceptance';
+import { accept } from '../utils/acceptance';
 import { clone, setServiceVersion, renameOrigin, SetupEnvForWindows } from '../services/create';
 import { red, green, blue } from '../utils/colors';
 import consts from '../consts';
@@ -34,7 +34,7 @@ export const createController = async(name = 'greenpress', type = 'default', alt
 
 // TODO: supply example for defaultValue
 export const askAlternativeFront = async(defaultValue?: string) => {
-	const answer = await yesNoQuestion(`Would you like to set alternative blog-front?`);
+	const answer = await accept(`Would you like to set alternative blog-front?`);
 	if (answer) {
 		return askQuestion(`Select alternative blog-front: `, defaultValue);
 	}

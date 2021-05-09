@@ -1,8 +1,8 @@
 import { deploymentTypes } from '../controllers/deployment/types';
 import { deployCommand } from '../controllers/deploy';
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 
-export const setDeployCommand = (program: CommanderStatic) => 
+export const setDeployCommand = (program: Command) => 
 	program
 		.command('deploy [type]')
 		.option('-a, --app <app>', 'application name')

@@ -1,20 +1,20 @@
 import { getStartStore } from '../store/start';
 import { red } from '../utils/colors';
-import { spawn, ChildProcess } from 'child_process';
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 
-export const checkImagesUp = (child: ChildProcess) => {
+export const checkImagesUp = (child: ChildProcessWithoutNullStreams) => {
 	return new Promise((resolve, reject) => {
 		const store = getStartStore();
-		child.onError((err) => {
+		child.on('error', (err) => {
 			console.log(red(`An error occurred while checking images startup. Error: ${err}`));
 			reject('Failed to run all images!');
 		});
 
-		child.onData((data) => {
+		child.on('message', (data) => {
 			store.sendOutput(data.toString())
 		});
 
-		child.onExit(() => {
+		child.on('exit', () => {
 			store.setStep('images', 'greenpress');
 			if (store.isProgressTypeResolved()) {
 				resolve(true);

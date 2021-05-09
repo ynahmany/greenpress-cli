@@ -29,24 +29,24 @@ export interface ComponentsDetails {
   services: Services;
 }
 export interface Images {
-  step1?: (string | number)[] | null;
-  step2?: (string | number)[] | null;
-  step3?: (string | number)[] | null;
-  step4?: (string | number)[] | null;
-  step5?: (string | number)[] | null;
-  step6?: (string | number)[] | null;
-  step7?: (string | number)[] | null;
-  greenpress?: (number | null)[] | null;
-  alreadyBuilt?: (string | number)[] | null;
+  step1?: [string | null, number];
+  step2?: [string | null, number];
+  step3?: [string | null, number];
+  step4?: [string | null, number];
+  step5?: [string | null, number];
+  step6?: [string | null, number];
+  step7?: [string | null, number];
+  greenpress?: [string | null, number];
+  alreadyBuilt?: [string | null, number];
 }
 export interface Services {
-  admin?: (string | number)[] | null;
-  assets?: (string | number)[] | null;
-  auth?: (string | number)[] | null;
-  content?: (string | number)[] | null;
-  drafts?: (string | number)[] | null;
-  secrets?: (string | number)[] | null;
-  front?: (string | number)[] | null;
+  admin?: [string | null, number];
+  assets?: [string | null, number];
+  auth?: [string | null, number];
+  content?: [string | null, number];
+  drafts?: [string | null, number];
+  secrets?: [string | null, number];
+  front?: [string | null, number];
 }
 export type CompositionType = 'local'
 
@@ -126,14 +126,14 @@ class StartStore {
     const { components, componentsDetails, incrementedComponents } = this.state;
     components.forEach((component) => {
       Object.entries(componentsDetails[component]).forEach((element) => {
-        const [searchText, progress] = element[1];
+        const [searchText, progress] = element;
         if (
           searchText &&
-          !incrementedComponents[element[0]] &&
+          !incrementedComponents[searchText] &&
           output.includes(searchText)
         ) {
-          this._progressBarStore.increment(progress || 0);
-          incrementedComponents[element[0]] = true;
+          this._progressBarStore.increment((progress as number) || 0);
+          incrementedComponents[searchText] = true;
         }
       });
     });
