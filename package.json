@@ -2,9 +2,9 @@
   "name": "@greenpress/cli",
   "version": "0.6.2",
   "description": "CLI to install greenpress",
-  "main": "cli.js",
+  "main": "./dist/cli.js",
   "bin": {
-    "greenpress": "cli.js"
+    "greenpress": "./dist/cli.js"
   },
   "repository": {
     "type": "git",
