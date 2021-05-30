@@ -7,6 +7,7 @@ const exec = promisify(callbackExec);
 export const execute = async (cmd: string, actionDescription?: string, execProps = null) => {
   try {
     const { stdout, stderr }  = await exec(cmd, execProps);
+    console.log('stdout, stderr', stdout, stderr);
       if (stderr) {
         console.log(
           red(
@@ -22,6 +23,7 @@ export const execute = async (cmd: string, actionDescription?: string, execProps
       console.log(stdout);
     }
   catch (error) {
+    console.log('====================', error);
     console.log(
       red(
         actionDescription

@@ -16,7 +16,6 @@ import { setDeployCommand } from './commands/deploy';
 import { setLogsCommand } from './commands/logs';
 
 program.version(version)
-// program.version('0.6.2')
 
 setCreateCommand(program);
 setUpgradeCommand(program);

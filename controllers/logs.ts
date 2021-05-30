@@ -3,6 +3,7 @@ import { join } from 'path';
 import { red } from '../utils/colors';
 
 export const logsController = async() => {
+	console.log('here?????');
 	if (!(await execute('npm run logs', 
 				  'show greenpress logs', 
 				  { cwd: join(process.cwd(), 'compose'), stdio:'inherit'}))) {
